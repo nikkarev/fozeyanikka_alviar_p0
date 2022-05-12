@@ -3,17 +3,17 @@ package model;
 public class CustomerPojo {
 	private int customerId;
 	private String customerName;
-	private String customerAddress;
+	private String password;
 	
 	public CustomerPojo() {
 		super();
 	}
 
-	public CustomerPojo(int customerId, String customerName, String customerAddress) {
+	public CustomerPojo(int customerId, String customerName, String password) {
 		super();
 		this.customerId = customerId;
 		this.customerName = customerName;
-		this.customerAddress = customerAddress;
+		this.password = password;
 	}
 
 	public int getCustomerId() {
@@ -32,21 +32,18 @@ public class CustomerPojo {
 		this.customerName = customerName;
 	}
 
-	public String getCustomerAddress() {
-		return customerAddress;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setCustomerAddress(String customerAddress) {
-		this.customerAddress = customerAddress;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	@Override
 	public String toString() {
-		return "CustomerPojo [customerId=" + customerId + ", customerName=" + customerName + ", customerAddress="
-				+ customerAddress + "]";
+		return "CustomerPojo [customerId=" + customerId + ", customerName=" + customerName + ", password=" + password
+				+ "]";
 	}
-	
-	
-	
 	
 }
