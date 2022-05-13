@@ -4,28 +4,32 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/*
+ * Load the driver only ONCE.
+ * Establish the driver only ONCE.
+ */
 public class DBUtil {
 
-	static Connection conn;
+	static Connection connection;
 	
 	static {
 		try {
-			Class.forName("org.postgresql.Driver");
+			Class.forName("org.postgresql.Driver"); //Load the driver using Class.forName() method
 			System.out.println("Driver Loaded");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	static Connection makeConnection() throws SQLException {
+	static Connection establishConnection() throws SQLException {
 		String connectionUrl = "jdbc:postgresql://localhost:5432/sms";
 		String userName = "postgres";
 		String password = "coffee";
 		
-		if(conn==null) {
-			conn = DriverManager.getConnection(connectionUrl, userName, password);
+		if(connection==null) {
+			connection = DriverManager.getConnection(connectionUrl, userName, password);
 		}
-		return conn;
+		return connection;
 	}
 	
 }
