@@ -5,11 +5,12 @@ CREATE TABLE account_info(
 
 CREATE TABLE customer_info(
 	customer_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, 
-	customer_name VARCHAR(20), password VARCHAR(20));
+	password VARCHAR(20) NOT NULL,
+	account_login );
 
 CREATE TABLE transaction_info(
 	transaction_number INT GENERATED ALWAYS AS IDENTITY, 
-	account_number INT, transaction_amount INT, 
+	account_number INT, 
+	transaction_amount INT, 
 	PRIMARY KEY (transaction_number), 
-	transaction_date DATE NOT NULL DEFAULT CURRENT_DATE, 
 	FOREIGN KEY (account_number) REFERENCES account_info(account_number));

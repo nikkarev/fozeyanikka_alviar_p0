@@ -1,12 +1,14 @@
 package dao;
 
+import model.TransactionPojo;
+
 public interface TransactionDao {
 
-	 //CREATE
+	 TransactionPojo createTransaction(TransactionPojo transactionPojo); //CREATE
 
-	 //UPDATE
+//	 TransactionPojo updateTransaction(TransactionPojo transactionPojo); //UPDATE -- NEEDED??
 
-	 //DELETE
+//	 TransactionPojo deleteTransaction(TransactionPojo transactionPojo); //DELETE -- NEEDED??
 
-	 //READ
+	 TransactionPojo displayTransaction(TransactionPojo transactionPojo); //READ
 }
