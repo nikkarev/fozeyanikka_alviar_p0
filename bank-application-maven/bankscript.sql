@@ -1,12 +1,17 @@
 CREATE TABLE account_info(
 	account_number INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, 
 	account_type VARCHAR(10), 
-	current_balance NUMERIC(6,2));
+	balance NUMERIC(6,2)
+	amount NUMERIC(6,2)
+	);
 
 CREATE TABLE customer_info(
-	customer_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, 
+	first_name VARCHAR(15) NOT NULL,
+	last_name VARCHAR(15) NOT NULL
+	username VARCHAR(20) NOT NULL, 
 	password VARCHAR(20) NOT NULL,
-	account_login );
+	account_login 
+	);
 
 CREATE TABLE transaction_info(
 	transaction_number INT GENERATED ALWAYS AS IDENTITY, 

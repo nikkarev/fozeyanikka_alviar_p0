@@ -3,17 +3,17 @@ package model;
 public class TransactionPojo {
 
 	private int transactionNumber;
-	private double transactionAmount;
+	private double amount;
 	
 	public TransactionPojo() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public TransactionPojo(int transactionNumber, double transactionAmount) {
+	public TransactionPojo(int transactionNumber, double amount) {
 		super();
 		this.transactionNumber = transactionNumber;
-		this.transactionAmount = transactionAmount;
+		this.amount = amount;
 	}
 
 	public int getTransactionNumber() {
@@ -24,18 +24,19 @@ public class TransactionPojo {
 		this.transactionNumber = transactionNumber;
 	}
 
-	public double getTransactionAmount() {
-		return transactionAmount;
+	public double getAmount() {
+		return amount;
 	}
 
-	public void setTransactionAmount(double transactionAmount) {
-		this.transactionAmount = transactionAmount;
+	public void setAmount(double amount) {
+		this.amount = amount;
 	}
 
 	@Override
 	public String toString() {
-		return "TransactionPojo [transactionNumber=" + transactionNumber + ", transactionAmount=" + transactionAmount
-				+ "]";
+		return "TransactionPojo [transactionNumber=" + transactionNumber + ", amount=" + amount + "]";
 	}
+
+	
 	
 }

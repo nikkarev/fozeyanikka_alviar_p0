@@ -14,17 +14,19 @@ package model;
 public class AccountPojo {
 	private int accountNumber;
 	private String accountType;
-	private double currentBalance;
+	private double balance;
+	private double amount;
 	
 	public AccountPojo() {
 		super();
 	}
 
-	public AccountPojo(int accountNumber, String accountType, double currentBalance) {
+	public AccountPojo(int accountNumber, String accountType, double balance, double amount) {
 		super();
 		this.accountNumber = accountNumber;
 		this.accountType = accountType;
-		this.currentBalance = currentBalance;
+		this.balance = balance;
+		this.amount = amount;
 	}
 
 	public int getAccountNumber() {
@@ -43,18 +45,28 @@ public class AccountPojo {
 		this.accountType = accountType;
 	}
 
-	public double getCurrentBalance() {
-		return currentBalance;
+	public double getBalance() {
+		return balance;
 	}
 
-	public void setCurrentBalance(double currentBalance) {
-		this.currentBalance = currentBalance;
+	public void setBalance(double balance) {
+		this.balance = balance;
+	}
+
+	public double getAmount() {
+		return amount;
+	}
+
+	public void setAmount(double amount) {
+		this.amount = amount;
 	}
 
 	@Override
 	public String toString() {
-		return "AccountPojo [accountNumber=" + accountNumber + ", accountType=" + accountType + ", currentBalance="
-				+ currentBalance + "]";
-	}	
+		return "AccountPojo [accountNumber=" + accountNumber + ", accountType=" + accountType + ", balance="
+				+ balance + ", amount=" + amount + "]";
+	}
+
+	
 	
 }
