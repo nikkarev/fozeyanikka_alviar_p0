@@ -42,7 +42,7 @@ public class AccountDaoDatabaseImpl implements AccountDao{
 	}
 
 	@Override
-	public void deposit(int accountNumber, double amount) {
+	public AccountPojo deposit(int accountNumber, double amount) {
 		Connection connection = null;
 		AccountPojo accountPojo = null;
 
@@ -59,6 +59,7 @@ public class AccountDaoDatabaseImpl implements AccountDao{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return accountPojo;
 	}
 
 	@Override
