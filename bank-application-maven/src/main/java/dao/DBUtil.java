@@ -14,15 +14,15 @@ public class DBUtil {
 	
 	static {
 		try {
-			Class.forName("org.postgresql.Driver"); //Load the driver using Class.forName() method
-			System.out.println("Driver Loaded");
+			Class.forName("org.postgresql.Driver");
+//			System.out.println("Driver Loaded");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
 	
 	static Connection establishConnection() throws SQLException {
-		String connectionUrl = "jdbc:postgresql://localhost:5432/sms";
+		String connectionUrl = "jdbc:postgresql://localhost:5433/bank";
 		String userName = "postgres";
 		String password = "coffee";
 		
