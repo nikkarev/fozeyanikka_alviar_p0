@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.AccountPojo;
-import model.ProductPojo;
 
 public class AccountDaoDatabaseImpl implements AccountDao{
 
@@ -21,7 +20,7 @@ public class AccountDaoDatabaseImpl implements AccountDao{
 			ResultSet resultSet = null;
 
 			connection = DBUtil.establishConnection();
-			Statement statement = connection.createStatement();
+//			Statement statement = connection.createStatement();
 			
 //			String query= "INSERT INTO account_info(account_number, account_type, current_balance) VALUES ("+accountPojo.getAccountNumber()+", ' "+accountPojo.getAccountType()+" ',  "+accountPojo.getAmount()+")";
 

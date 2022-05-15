@@ -1,11 +1,9 @@
-package dao;
-
-import java.util.List;
+package service;
 
 import model.CustomerPojo;
 
-public interface CustomerDao {
-
+public interface CustomerService {
+	
 	CustomerPojo createCustomer(CustomerPojo customerPojo); //CREATE
 
 	CustomerPojo updatePassword(CustomerPojo customerPojo); //UPDATE
@@ -15,5 +13,4 @@ public interface CustomerDao {
 //	List<CustomerPojo> displayCustomer(); //READ
 
 	CustomerPojo customerLogin(CustomerPojo customerPojo); 
-	
 }
