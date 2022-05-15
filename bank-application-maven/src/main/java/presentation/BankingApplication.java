@@ -1,5 +1,6 @@
 package presentation;
 
+import java.util.List;
 import java.util.Scanner;
 
 import model.AccountPojo;
@@ -130,6 +131,50 @@ public class BankingApplication {
 							System.out.println("Congratulations! You have successfully deposited " +depositPojo.getAmount()+ "into Account ID: " +depositPojo.getAccountNumber());
 							System.out.println("Your new balance is:" +depositPojo.getBalance());
 							System.out.println("----------------------------------------");
+							break;
+						
+						// Withdraw
+						case 3:
+							AccountPojo withdrawPojo;
+							
+							System.out.println("Enter the Account ID:");
+							int withdrawID = scan.nextInt();
+							
+							System.out.println("Enter the amount you want to withdraw:");
+							double withdrawAmount = scan.nextDouble();
+							depositPojo = accountService.deposit(withdrawID, withdrawAmount);
+							withdrawPojo = accountService.withdraw(withdrawID, withdrawAmount);
+							
+							System.out.println("----------------------------------------");
+							System.out.println("Congratulations! You have successfully withdrawn " +withdrawPojo.getAmount()+ "into Account ID: " +withdrawPojo.getAccountNumber());
+							System.out.println("Your new balance is:" +withdrawPojo.getBalance());
+							System.out.println("----------------------------------------");
+							break;
+							
+						// View Balance
+						case 4:
+							List<AccountPojo> viewAllBalance;
+							
+							viewAllBalance = accountService.viewBalance();
+							
+							System.out.println("----------------------------------------");
+							System.out.println("Balances: ");
+//							viewAllBalance.forEach((balance) -> System.out.println(balance.getBalance()));
+							System.out.println("----------------------------------------");
+							System.out.println("Would you like to go back to the main menu? (y/n)");
+							choice = scan.next().charAt(0);
+							break;
+							
+						// Delete Account
+						case 5:
+							System.out.println("Enter the Account ID you want to remove:");
+							int accountId = scan.nextInt();
+							
+							AccountPojo getAccountPojo = null;
+							getAccountPojo = accountService.getAccount(accountId);
+						
+						// Logout
+						case 6: 
 					}
 					break;
 			}

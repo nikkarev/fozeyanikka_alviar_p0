@@ -10,7 +10,9 @@ public interface AccountDao {
 
 	AccountPojo deposit(int accountNumber, double amount); 
 
-	void withdraw(int accountNumber, double amount); 
+	AccountPojo withdraw(int accountNumber, double amount); 
 
 	List<AccountPojo> viewBalance();
+	
+	AccountPojo getAccount(int accountNumber);
 }

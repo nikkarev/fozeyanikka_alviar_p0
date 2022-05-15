@@ -8,7 +8,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import exception.SystemException;
 import model.AccountPojo;
+import model.ProductPojo;
 
 public class AccountDaoDatabaseImpl implements AccountDao{
 
@@ -24,12 +26,11 @@ public class AccountDaoDatabaseImpl implements AccountDao{
 			
 //			String query= "INSERT INTO account_info(account_number, account_type, current_balance) VALUES ("+accountPojo.getAccountNumber()+", ' "+accountPojo.getAccountType()+" ',  "+accountPojo.getAmount()+")";
 
-			String query= "INSERT INTO account_info(account_number, account_type, current_balance) VALUES (?, ?,?)";
+			String query= "INSERT INTO account_info(account_number, current_balance) VALUES (?, ?,?)";
 			
 			PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			preparedStatement.setInt(1, accountPojo.getAccountNumber());
-			preparedStatement.setString(2, accountPojo.getAccountType());
-			preparedStatement.setDouble(3, accountPojo.getBalance());
+			preparedStatement.setDouble(2, accountPojo.getBalance());
 			
 			resultSet = preparedStatement.getGeneratedKeys();
 			resultSet = preparedStatement.executeQuery(query);
@@ -63,7 +64,7 @@ public class AccountDaoDatabaseImpl implements AccountDao{
 	}
 
 	@Override
-	public void withdraw(int accountNumber, double amount) {
+	public AccountPojo withdraw(int accountNumber, double amount) {
 		Connection connection = null;
 		AccountPojo accountPojo = null;
 
@@ -82,6 +83,7 @@ public class AccountDaoDatabaseImpl implements AccountDao{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return accountPojo;
 	}
 
 	@Override
@@ -104,7 +106,7 @@ public class AccountDaoDatabaseImpl implements AccountDao{
 			resultSet = preparedStatement.executeQuery(query);
 			
 			while(resultSet.next()) {
-				AccountPojo accountPojo = new AccountPojo(resultSet.getInt(1), resultSet.getString(2), resultSet.getDouble(3),  resultSet.getDouble(4) );
+				AccountPojo accountPojo = new AccountPojo(resultSet.getInt(1), resultSet.getDouble(2),  resultSet.getDouble(3) );
 				allBalance.add(accountPojo);
 			}
 		} catch (SQLException e) {
@@ -113,5 +115,25 @@ public class AccountDaoDatabaseImpl implements AccountDao{
 		return allBalance;
 	}
 
+	@Override
+	public AccountPojo getAccount(int accountNumber) {
+		Connection connection = null;
+		AccountPojo accountPojo = null;
+		
+		try {
+			connection = DBUtil.establishConnection();
+			Statement statement = connection.createStatement();
+			String query = "SELECT * FROM account_info WHERE = " + accountNumber;
+			ResultSet resultSet = statement.executeQuery(query);
+			if(resultSet.next()) {
+				accountPojo = new AccountPojo(resultSet.getInt(1), resultSet.getDouble(2), resultSet.getDouble(3));
+				}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
+		return accountPojo;
+	}
+	
+	
 
 }

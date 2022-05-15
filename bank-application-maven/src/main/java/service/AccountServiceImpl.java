@@ -7,6 +7,7 @@ import dao.AccountDaoDatabaseImpl;
 import model.AccountPojo;
 
 public class AccountServiceImpl implements AccountService{
+
 	AccountDao accountDao;
 
 	public AccountServiceImpl() {
@@ -27,13 +28,13 @@ public class AccountServiceImpl implements AccountService{
 	}
 
 	@Override
-	public void deposit(int accountNumber, double amount) {
-		accountDao.deposit(accountNumber, amount);
+	public AccountPojo deposit(int accountNumber, double amount) {
+		return accountDao.deposit(accountNumber, amount);
 	}
 
 	@Override
-	public void withdraw(int accountNumber, double amount) {
-		accountDao.withdraw(accountNumber, amount);
+	public AccountPojo withdraw(int accountNumber, double amount) {
+		return accountDao.withdraw(accountNumber, amount);
 
 	}
 
@@ -41,5 +42,10 @@ public class AccountServiceImpl implements AccountService{
 	public List<AccountPojo> viewBalance() {
 		return accountDao.viewBalance();
 	}
+	
+	@Override
+	public AccountPojo getAccount(int accountNumber) {
+		return accountDao.getAccount(accountNumber);
+	}	
 
 }
