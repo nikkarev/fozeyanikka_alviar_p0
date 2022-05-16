@@ -46,6 +46,12 @@ public class AccountServiceImpl implements AccountService{
 	@Override
 	public AccountPojo getAccount(int accountNumber) {
 		return accountDao.getAccount(accountNumber);
+	}
+
+	@Override
+	public void deleteAccount(int accountNumber) {
+		accountDao.deleteAccount(accountNumber);
+		
 	}	
 
 }

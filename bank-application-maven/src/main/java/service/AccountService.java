@@ -15,4 +15,6 @@ public interface AccountService {
 	List<AccountPojo> viewBalance();
 	
 	AccountPojo getAccount(int accountNumber);
+	
+	void deleteAccount(int accountNumber);
 }

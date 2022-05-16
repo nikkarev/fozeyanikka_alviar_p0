@@ -8,9 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import exception.SystemException;
 import model.AccountPojo;
-import model.ProductPojo;
 
 public class AccountDaoDatabaseImpl implements AccountDao{
 
@@ -49,14 +47,16 @@ public class AccountDaoDatabaseImpl implements AccountDao{
 
 		try {
 			connection = DBUtil.establishConnection();
-			Statement statement = connection.createStatement();
-			String query = " UPDATE account_info SET balance=" + accountPojo.getBalance() + accountPojo.getAmount() +  "WHERE accountNumber=" +accountPojo.getAccountNumber() ;
-							
-//			PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-//			preparedStatement.setDouble(1, accountPojo.getAmount());
-//			preparedStatement.setInt(2, accountPojo.getAccountNumber());
+//			Statement statement = connection.createStatement();
+//			String query = " UPDATE account_info SET balance=" + accountPojo.getBalance() + accountPojo.getAmount() +  "WHERE accountNumber=" +accountPojo.getAccountNumber() ;
+			String query = " UPDATE account_info SET balance = ? WHERE accountNumber = ? ";
+
 			
-			int rowsAffected = statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+			PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+			preparedStatement.setDouble(1, accountPojo.getAmount());
+			preparedStatement.setInt(2, accountPojo.getAccountNumber());
+			
+			int rowsAffected = preparedStatement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -70,16 +70,17 @@ public class AccountDaoDatabaseImpl implements AccountDao{
 
 		try {
 			connection = DBUtil.establishConnection();
-			Statement statement = connection.createStatement();
+//			Statement statement = connection.createStatement();
 			
-			String query= " UPDATE account_info SET current_balance=current_balance - ? WHERE accountNumber=? ";
-							
+			String query= "UPDATE account_info SET balance = balance - ? WHERE account_number = ?";
+			PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+			
 			// Fetch the automated primary key for accountNumber
 //			PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-//			preparedStatement.setDouble(1, accountPojo.getAmount());
-//			preparedStatement.setInt(2, accountPojo.getAccountNumber());
+			preparedStatement.setDouble(1, accountPojo.getAmount());
+			preparedStatement.setInt(2, accountPojo.getAccountNumber());
 			
-			int rowsAffected = statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+			int rowsAffected = preparedStatement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -123,7 +124,7 @@ public class AccountDaoDatabaseImpl implements AccountDao{
 		try {
 			connection = DBUtil.establishConnection();
 			Statement statement = connection.createStatement();
-			String query = "SELECT * FROM account_info WHERE = " + accountNumber;
+			String query = "SELECT * FROM account_info WHERE account_number= " + accountNumber;
 			ResultSet resultSet = statement.executeQuery(query);
 			if(resultSet.next()) {
 				accountPojo = new AccountPojo(resultSet.getInt(1), resultSet.getDouble(2), resultSet.getDouble(3));
@@ -132,6 +133,20 @@ public class AccountDaoDatabaseImpl implements AccountDao{
 			e.printStackTrace();
 		}		
 		return accountPojo;
+	}
+
+	@Override
+	public void deleteAccount(int accountNumber) {
+		Connection connection = null;
+		
+		try {
+			connection = DBUtil.establishConnection();
+			Statement statement = connection.createStatement();
+			String query = "DELETE * FROM account_info WHERE account_number= " + accountNumber;
+			int rowsAffected = statement.executeUpdate(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
 	}
 	
 	

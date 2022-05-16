@@ -37,16 +37,12 @@ public class BankingApplication {
 			switch(option) {
 				// Register New Account
 				case 1:
-					AccountPojo newAccount = new AccountPojo();
-					System.out.println("Please enter your initial balance:");
-					newAccount.setBalance(scan.nextDouble());
-					
 					CustomerPojo newCustomer = new CustomerPojo();
 					System.out.println("Please enter your First Name:");
 					scan.nextLine();
 					newCustomer.setCustomerFirstName(scan.nextLine());
 					
-					System.out.println("Please enter your last name:");
+					System.out.println("Please enter your Last name:");
 					scan.nextLine();
 					newCustomer.setCustomerLastName(scan.nextLine());
 					
@@ -57,6 +53,10 @@ public class BankingApplication {
 					System.out.println("Create your password:");
 					scan.nextLine();
 					newCustomer.setPassword(scan.nextLine());
+					
+					AccountPojo newAccount = new AccountPojo();
+					System.out.println("Please enter your initial balance:");
+					newAccount.setBalance(scan.nextDouble());
 					
 					// might throw an exception
 					CustomerPojo customerPojo = customerService.createCustomer(newCustomer);
@@ -81,7 +81,6 @@ public class BankingApplication {
 					System.out.println("3. Withdraw");
 					System.out.println("4. View Balance");
 					System.out.println("5. Delete Account");
-					System.out.println("6. Logout");
 					System.out.println("----------------------------------------");
 					System.out.println("Enter your choice:");
 					int choice = Integer.parseInt(scan.nextLine());
@@ -171,12 +170,51 @@ public class BankingApplication {
 							int accountId = scan.nextInt();
 							
 							AccountPojo getAccountPojo = null;
+							CustomerPojo getCustomerPojo = null;
+							
+							// implement try-catch block
 							getAccountPojo = accountService.getAccount(accountId);
+							
+							if(getAccountPojo == null) {
+								System.out.println("----------------------------------------");
+								System.out.println("The Account ID you entered does not exist. \nPlease enter a valid Account ID.");
+								System.out.println("----------------------------------------");
+								break; // why break?
+							} else {
+								System.out.println("----------------------------------------");
+								System.out.println("Account to be removed: ");
+								System.out.println("----------------------------------------");
+								System.out.println("Account Number: " + getAccountPojo.getAccountNumber());
+								System.out.println("Account Balance: " + getAccountPojo.getBalance());
+								System.out.println("----------------------------------------");
+								System.out.println("Do you want to proceed to delete this account? (y/n)");
+								char answer = scan.next().charAt(0);
+								System.out.println("----------------------------------------");
+								if(answer == 'y') {
+									
+									// implement try-catch block
+									accountService.deleteAccount(accountId);
+									System.out.println("Account has been successfully removed.");
+								} else {
+									System.out.println("Account removal failed.");
+								}
+								System.out.println("----------------------------------------");
+							}
+							break;
 						
 						// Logout
 						case 6: 
+
 					}
 					break;
+					
+					//Logout
+					default:
+						System.out.println("----------------------------------------");
+						System.out.println("Thank you for using our Banking Application System! \nHave a great day!");
+						System.out.println("----------------------------------------");
+						System.exit(0);
+						break;
 			}
 		}
 		System.out.println("----------------------------------------");

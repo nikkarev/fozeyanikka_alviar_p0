@@ -22,16 +22,17 @@ public class CustomerDaoDatabaseImpl implements CustomerDao{
 			Statement statement = connection.createStatement();
 			
 			String query= "INSERT INTO customer_info(customer_id, first_name, last_name, username, password) "
-					+ "VALUES (?, ?, ?, ?, ?, ?)";
+					+ "VALUES (?, ?, ?, ?, ?)";
 			
-			PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+//			PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setInt(1,  customerPojo.getCustomerId());
 			preparedStatement.setString(2,  customerPojo.getCustomerFirstName());
 			preparedStatement.setString(3, customerPojo.getCustomerLastName());
 			preparedStatement.setString(4, customerPojo.getUsername());
 			preparedStatement.setString(5, customerPojo.getPassword());
 			
-			resultSet = preparedStatement.getGeneratedKeys();
+//			resultSet = preparedStatement.getGeneratedKeys();
 			resultSet = preparedStatement.executeQuery(query);
 			resultSet.next();
 			

@@ -15,4 +15,6 @@ public interface AccountDao {
 	List<AccountPojo> viewBalance();
 	
 	AccountPojo getAccount(int accountNumber);
+	
+	public void deleteAccount(int accountNumber);
 }
