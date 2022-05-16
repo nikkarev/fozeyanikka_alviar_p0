@@ -8,11 +8,7 @@ public interface CustomerDao {
 
 	CustomerPojo createCustomer(CustomerPojo customerPojo); //CREATE
 
-	CustomerPojo updatePassword(CustomerPojo customerPojo); //UPDATE
-
 	void deleteAccount(int customerId); //DELETE
-
-//	List<CustomerPojo> displayCustomer(); //READ
 
 	CustomerPojo customerLogin(CustomerPojo customerPojo); 
 	

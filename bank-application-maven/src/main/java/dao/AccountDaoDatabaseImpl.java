@@ -1,7 +1,6 @@
 package dao;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -20,18 +19,11 @@ public class AccountDaoDatabaseImpl implements AccountDao{
 			ResultSet resultSet = null;
 
 			connection = DBUtil.establishConnection();
-//			Statement statement = connection.createStatement();
+			Statement statement = connection.createStatement();
 			
-//			String query= "INSERT INTO account_info(account_number, account_type, current_balance) VALUES ("+accountPojo.getAccountNumber()+", ' "+accountPojo.getAccountType()+" ',  "+accountPojo.getAmount()+")";
-
-			String query= "INSERT INTO account_info(account_number, current_balance) VALUES (?, ?,?)";
+			String query= "INSERT INTO account_info(balance) VALUES ("+accountPojo.getBalance() + ") returning account_number";
 			
-			PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-			preparedStatement.setInt(1, accountPojo.getAccountNumber());
-			preparedStatement.setDouble(2, accountPojo.getBalance());
-			
-			resultSet = preparedStatement.getGeneratedKeys();
-			resultSet = preparedStatement.executeQuery(query);
+			resultSet = statement.executeQuery(query);
 			resultSet.next();
 			accountPojo.setAccountNumber(resultSet.getInt(1)); // ??????????				
 		} catch (SQLException e) {
@@ -47,16 +39,11 @@ public class AccountDaoDatabaseImpl implements AccountDao{
 
 		try {
 			connection = DBUtil.establishConnection();
-//			Statement statement = connection.createStatement();
-//			String query = " UPDATE account_info SET balance=" + accountPojo.getBalance() + accountPojo.getAmount() +  "WHERE accountNumber=" +accountPojo.getAccountNumber() ;
-			String query = " UPDATE account_info SET balance = ? WHERE accountNumber = ? ";
-
+			Statement statement = connection.createStatement();
 			
-			PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-			preparedStatement.setDouble(1, accountPojo.getAmount());
-			preparedStatement.setInt(2, accountPojo.getAccountNumber());
+			String query = " UPDATE account_info SET balance = balance " + accountPojo.getAmount() +  "WHERE accountNumber = " +accountPojo.getAccountNumber() + "returning account_number";
 			
-			int rowsAffected = preparedStatement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+			int rowsAffected = statement.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -70,17 +57,11 @@ public class AccountDaoDatabaseImpl implements AccountDao{
 
 		try {
 			connection = DBUtil.establishConnection();
-//			Statement statement = connection.createStatement();
+			Statement statement = connection.createStatement();
 			
-			String query= "UPDATE account_info SET balance = balance - ? WHERE account_number = ?";
-			PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+			String query = "UPDATE account_info SET balance = " +accountPojo.getBalance()+ "WHERE account_number = " +accountPojo.getAccountNumber(); 
 			
-			// Fetch the automated primary key for accountNumber
-//			PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-			preparedStatement.setDouble(1, accountPojo.getAmount());
-			preparedStatement.setInt(2, accountPojo.getAccountNumber());
-			
-			int rowsAffected = preparedStatement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+			int rowsAffected = statement.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -93,18 +74,12 @@ public class AccountDaoDatabaseImpl implements AccountDao{
 		List<AccountPojo> allBalance = new ArrayList<AccountPojo>();
 		
 		try {
-			ResultSet resultSet = null;
-
 			connection = DBUtil.establishConnection();
-//			Statement statement = connection.createStatement();
+			Statement statement = connection.createStatement();
 			
 			String query= " SELECT * FROM account_info";
-							
-			// Fetch the automated primary key for accountNumber
-			PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			
-			resultSet = preparedStatement.getGeneratedKeys();
-			resultSet = preparedStatement.executeQuery(query);
+			ResultSet resultSet = statement.executeQuery(query);
 			
 			while(resultSet.next()) {
 				AccountPojo accountPojo = new AccountPojo(resultSet.getInt(1), resultSet.getDouble(2),  resultSet.getDouble(3) );

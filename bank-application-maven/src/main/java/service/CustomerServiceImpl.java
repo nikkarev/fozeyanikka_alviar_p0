@@ -26,10 +26,6 @@ public class CustomerServiceImpl implements CustomerService{
 		return customerDao.createCustomer(customerPojo);
 	}
 
-	@Override
-	public CustomerPojo updatePassword(CustomerPojo customerPojo) {
-		return customerDao.updatePassword(customerPojo);
-	}
 
 	@Override
 	public void deleteAccount(int customerId) {

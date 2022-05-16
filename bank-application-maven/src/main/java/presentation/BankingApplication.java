@@ -3,6 +3,7 @@ package presentation;
 import java.util.List;
 import java.util.Scanner;
 
+import exception.SystemException;
 import model.AccountPojo;
 import model.CustomerPojo;
 import service.AccountService;
@@ -41,15 +42,12 @@ public class BankingApplication {
 					System.out.println("Please enter your First Name:");
 					scan.nextLine();
 					newCustomer.setCustomerFirstName(scan.nextLine());
-					
 					System.out.println("Please enter your Last name:");
 					scan.nextLine();
 					newCustomer.setCustomerLastName(scan.nextLine());
-					
 					System.out.println("Create your username:");
 					scan.nextLine();
 					newCustomer.setUsername(scan.nextLine());
-					
 					System.out.println("Create your password:");
 					scan.nextLine();
 					newCustomer.setPassword(scan.nextLine());
@@ -58,9 +56,15 @@ public class BankingApplication {
 					System.out.println("Please enter your initial balance:");
 					newAccount.setBalance(scan.nextDouble());
 					
-					// might throw an exception
-					CustomerPojo customerPojo = customerService.createCustomer(newCustomer);
-					AccountPojo accountPojo = accountService.createAccount(newAccount);
+					CustomerPojo customerPojo = null;
+					AccountPojo accountPojo = null;
+					try {
+						customerPojo = customerService.createCustomer(newCustomer);
+						accountPojo = accountService.createAccount(newAccount); 
+					} catch (SystemException e) {
+						System.out.println(e.getMessage());
+						break;
+					}
 					
 					System.out.println("----------------------------------------");
 					System.out.println("Congratulations! Account successfully created! \nYour CustomerID is: " + customerPojo.getCustomerId());
@@ -81,6 +85,7 @@ public class BankingApplication {
 					System.out.println("3. Withdraw");
 					System.out.println("4. View Balance");
 					System.out.println("5. Delete Account");
+					System.out.println("5. Logout");
 					System.out.println("----------------------------------------");
 					System.out.println("Enter your choice:");
 					int choice = Integer.parseInt(scan.nextLine());
@@ -158,7 +163,7 @@ public class BankingApplication {
 							
 							System.out.println("----------------------------------------");
 							System.out.println("Balances: ");
-//							viewAllBalance.forEach((balance) -> System.out.println(balance.getBalance()));
+							viewAllBalance.forEach((balance) -> System.out.println(balance.getBalance()));
 							System.out.println("----------------------------------------");
 							System.out.println("Would you like to go back to the main menu? (y/n)");
 							choice = scan.next().charAt(0);
@@ -204,6 +209,11 @@ public class BankingApplication {
 						
 						// Logout
 						case 6: 
+							System.out.println("----------------------------------------");
+							System.out.println("Thank you for using our Banking Application System! \nHave a great day!");
+							System.out.println("----------------------------------------");
+							System.exit(0);
+							break;
 
 					}
 					break;

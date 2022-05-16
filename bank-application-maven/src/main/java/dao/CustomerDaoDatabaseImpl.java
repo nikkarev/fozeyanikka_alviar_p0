@@ -21,19 +21,12 @@ public class CustomerDaoDatabaseImpl implements CustomerDao{
 			connection = DBUtil.establishConnection();
 			Statement statement = connection.createStatement();
 			
-			String query= "INSERT INTO customer_info(customer_id, first_name, last_name, username, password) "
-					+ "VALUES (?, ?, ?, ?, ?)";
+			String query= "INSERT INTO customer_info(first_name, last_name, username, password) "
+					+ "VALUES ('"+customerPojo.getCustomerFirstName()+"', "
+							+ "'"+customerPojo.getCustomerLastName()+"', '"+customerPojo.getUsername()+"', "
+									+ "'"+customerPojo.getPassword()+"' ) returning customer_id";
 			
-//			PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-			PreparedStatement preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setInt(1,  customerPojo.getCustomerId());
-			preparedStatement.setString(2,  customerPojo.getCustomerFirstName());
-			preparedStatement.setString(3, customerPojo.getCustomerLastName());
-			preparedStatement.setString(4, customerPojo.getUsername());
-			preparedStatement.setString(5, customerPojo.getPassword());
-			
-//			resultSet = preparedStatement.getGeneratedKeys();
-			resultSet = preparedStatement.executeQuery(query);
+			resultSet = statement.executeQuery(query);
 			resultSet.next();
 			
 			//assign the retrieve customer id inside the customer pojo
@@ -43,26 +36,19 @@ public class CustomerDaoDatabaseImpl implements CustomerDao{
 		}
 		return customerPojo;
 	}
-
+	
 	@Override
-	public CustomerPojo updatePassword(CustomerPojo customerPojo) {
+	public void deleteAccount(int customerId) {
 		Connection connection = null;
 		
 		try {
 			connection = DBUtil.establishConnection();
 			Statement statement = connection.createStatement();
-			String query = "UPDATE customer_info password= " +customerPojo.getPassword() 
-				+ "WHERE customer_id= " +customerPojo.getCustomerId();
+			String query = "DELETE * FROM customer_info WHERE customer_id= " + customerId;
 			int rowsAffected = statement.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return customerPojo;
-	}
-
-	@Override
-	public void deleteAccount(int customerId) {
-		
 	}
 
 	@Override
