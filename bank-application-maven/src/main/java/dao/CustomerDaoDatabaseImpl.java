@@ -7,12 +7,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
+import exception.LoginFailedException;
+import exception.SystemException;
 import model.CustomerPojo;
 
 public class CustomerDaoDatabaseImpl implements CustomerDao{
 
 	@Override
-	public CustomerPojo createCustomer(CustomerPojo customerPojo) {
+	public CustomerPojo createCustomer(CustomerPojo customerPojo) throws SystemException {
 		Connection connection = null;
 
 		try {
@@ -29,16 +31,16 @@ public class CustomerDaoDatabaseImpl implements CustomerDao{
 			resultSet = statement.executeQuery(query);
 			resultSet.next();
 			
-			//assign the retrieve customer id inside the customer pojo
 			customerPojo.setCustomerId(resultSet.getInt(1));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new SystemException();
 		}
 		return customerPojo;
 	}
 	
 	@Override
-	public void deleteAccount(int customerId) {
+	public void deleteAccount(int customerId) throws SystemException {
 		Connection connection = null;
 		
 		try {
@@ -48,11 +50,12 @@ public class CustomerDaoDatabaseImpl implements CustomerDao{
 			int rowsAffected = statement.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new SystemException();
 		}
 	}
 
 	@Override
-	public CustomerPojo customerLogin(CustomerPojo customerPojo) {
+	public CustomerPojo customerLogin(CustomerPojo customerPojo) throws SystemException, LoginFailedException {
 		Connection connection = null;
 		
 		try {
@@ -61,12 +64,19 @@ public class CustomerDaoDatabaseImpl implements CustomerDao{
 					"and password= '"+customerPojo.getPassword() ;
 			
 			ResultSet resultSet = statement.executeQuery(query);
-			if(resultSet.next()) {
+			
+			int counter = 0;
+			while(resultSet.next()) {
+				counter ++;
 				customerPojo.setCustomerFirstName(resultSet.getString(3));
 				customerPojo.setCustomerLastName(resultSet.getString(4));
 			}
+			if(counter == 0) {
+				throw new LoginFailedException();
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new SystemException();
 		}
 		return customerPojo;
 	}

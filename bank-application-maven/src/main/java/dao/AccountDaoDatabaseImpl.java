@@ -7,12 +7,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import exception.FundNotEnoughException;
+import exception.SystemException;
 import model.AccountPojo;
 
 public class AccountDaoDatabaseImpl implements AccountDao{
 
 	@Override
-	public AccountPojo createAccount(AccountPojo accountPojo) {
+	public AccountPojo createAccount(AccountPojo accountPojo) throws SystemException {
 		Connection connection = null;
 
 		try {
@@ -28,12 +30,13 @@ public class AccountDaoDatabaseImpl implements AccountDao{
 			accountPojo.setAccountNumber(resultSet.getInt(1)); // ??????????				
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new SystemException();
 		}
 		return accountPojo;
 	}
 
 	@Override
-	public AccountPojo deposit(int accountNumber, double amount) {
+	public AccountPojo deposit(int accountNumber, double amount) throws SystemException {
 		Connection connection = null;
 		AccountPojo accountPojo = null;
 
@@ -46,12 +49,13 @@ public class AccountDaoDatabaseImpl implements AccountDao{
 			int rowsAffected = statement.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new SystemException();
 		}
 		return accountPojo;
 	}
 
 	@Override
-	public AccountPojo withdraw(int accountNumber, double amount) {
+	public AccountPojo withdraw(int accountNumber, double amount) throws SystemException, FundNotEnoughException {
 		Connection connection = null;
 		AccountPojo accountPojo = null;
 
@@ -59,17 +63,21 @@ public class AccountDaoDatabaseImpl implements AccountDao{
 			connection = DBUtil.establishConnection();
 			Statement statement = connection.createStatement();
 			
-			String query = "UPDATE account_info SET balance = " +accountPojo.getBalance()+ "WHERE account_number = " +accountPojo.getAccountNumber(); 
+			String query = "UPDATE account_info SET balance = balance - " +accountPojo.getBalance()+ "WHERE account_number = " +accountPojo.getAccountNumber(); 
 			
+			if(accountPojo.getBalance() == 0) {
+				throw new FundNotEnoughException();
+			}
 			int rowsAffected = statement.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new SystemException();
 		}
 		return accountPojo;
 	}
 
 	@Override
-	public List<AccountPojo> viewBalance() {
+	public List<AccountPojo> viewBalance() throws SystemException {
 		Connection connection = null;
 		List<AccountPojo> allBalance = new ArrayList<AccountPojo>();
 		
@@ -87,12 +95,13 @@ public class AccountDaoDatabaseImpl implements AccountDao{
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new SystemException();
 		}
 		return allBalance;
 	}
 
 	@Override
-	public AccountPojo getAccount(int accountNumber) {
+	public AccountPojo getAccount(int accountNumber) throws SystemException {
 		Connection connection = null;
 		AccountPojo accountPojo = null;
 		
@@ -106,12 +115,13 @@ public class AccountDaoDatabaseImpl implements AccountDao{
 				}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new SystemException();
 		}		
 		return accountPojo;
 	}
 
 	@Override
-	public void deleteAccount(int accountNumber) {
+	public void deleteAccount(int accountNumber) throws SystemException {
 		Connection connection = null;
 		
 		try {
@@ -121,9 +131,7 @@ public class AccountDaoDatabaseImpl implements AccountDao{
 			int rowsAffected = statement.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new SystemException();
 		}		
 	}
-	
-	
-
 }

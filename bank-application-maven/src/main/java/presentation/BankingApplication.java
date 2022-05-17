@@ -3,6 +3,7 @@ package presentation;
 import java.util.List;
 import java.util.Scanner;
 
+import exception.FundNotEnoughException;
 import exception.SystemException;
 import model.AccountPojo;
 import model.CustomerPojo;
@@ -111,8 +112,13 @@ public class BankingApplication {
 							scan.nextLine();
 							newCustomer.setPassword(scan.nextLine());
 							
-							// might throw an exception
-							customerPojo = customerService.createCustomer(newCustomer);
+							try {
+								customerPojo = customerService.createCustomer(newCustomer);
+							} catch(SystemException e) {
+								System.out.println(e.getMessage());
+								break;
+							}
+							
 							
 							System.out.println("----------------------------------------");
 							System.out.println("Congratulations! Account successfully created! \nYour CustomerID is: " + customerPojo.getCustomerId());
@@ -129,7 +135,13 @@ public class BankingApplication {
 							
 							System.out.println("Enter the amount you want to deposit:");
 							double depositAmount = scan.nextDouble();
-							depositPojo = accountService.deposit(depositId, depositAmount);
+							
+							try {
+								depositPojo = accountService.deposit(depositId, depositAmount);
+							} catch (SystemException e) {
+								System.out.println(e.getMessage());
+								break;
+							}
 							
 							System.out.println("----------------------------------------");
 							System.out.println("Congratulations! You have successfully deposited " +depositPojo.getAmount()+ "into Account ID: " +depositPojo.getAccountNumber());
@@ -146,8 +158,21 @@ public class BankingApplication {
 							
 							System.out.println("Enter the amount you want to withdraw:");
 							double withdrawAmount = scan.nextDouble();
+							depositPojo = null;
+							withdrawPojo = null;
+						try {
 							depositPojo = accountService.deposit(withdrawID, withdrawAmount);
-							withdrawPojo = accountService.withdraw(withdrawID, withdrawAmount);
+							try {
+								withdrawPojo = accountService.withdraw(withdrawID, withdrawAmount);
+							} catch (FundNotEnoughException e) {
+								e.printStackTrace();
+								System.out.println(e.getMessage());
+							}
+						} catch (SystemException e) {
+							e.printStackTrace();
+							System.out.println(e.getMessage());
+							break;
+						}
 							
 							System.out.println("----------------------------------------");
 							System.out.println("Congratulations! You have successfully withdrawn " +withdrawPojo.getAmount()+ "into Account ID: " +withdrawPojo.getAccountNumber());
@@ -159,6 +184,7 @@ public class BankingApplication {
 						case 4:
 							List<AccountPojo> viewAllBalance;
 							
+						try {
 							viewAllBalance = accountService.viewBalance();
 							
 							System.out.println("----------------------------------------");
@@ -168,6 +194,10 @@ public class BankingApplication {
 							System.out.println("Would you like to go back to the main menu? (y/n)");
 							choice = scan.next().charAt(0);
 							break;
+						} catch (SystemException e1) {
+							e1.printStackTrace();
+							System.out.println(e1.getMessage());
+						}
 							
 						// Delete Account
 						case 5:
@@ -176,9 +206,13 @@ public class BankingApplication {
 							
 							AccountPojo getAccountPojo = null;
 							CustomerPojo getCustomerPojo = null;
-							
-							// implement try-catch block
-							getAccountPojo = accountService.getAccount(accountId);
+							try {
+								getAccountPojo = accountService.getAccount(accountId);
+							} catch (SystemException e) {
+								e.printStackTrace();
+								System.out.println(e.getMessage());
+								break;
+							}
 							
 							if(getAccountPojo == null) {
 								System.out.println("----------------------------------------");
@@ -197,8 +231,13 @@ public class BankingApplication {
 								System.out.println("----------------------------------------");
 								if(answer == 'y') {
 									
-									// implement try-catch block
-									accountService.deleteAccount(accountId);
+									try {
+										accountService.deleteAccount(accountId);
+									} catch (SystemException e) {
+										e.printStackTrace();
+										System.out.println(e.getMessage());
+										break;
+									}
 									System.out.println("Account has been successfully removed.");
 								} else {
 									System.out.println("Account removal failed.");

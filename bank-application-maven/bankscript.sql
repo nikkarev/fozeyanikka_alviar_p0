@@ -25,14 +25,3 @@ CREATE TABLE customer_info(
 		ADD CONSTRAINT foreign_key 
 			FOREIGN KEY (account_number) 
 				REFERENCES account_info (account_number);
-				
-CREATE TABLE deleted_customer(
-	
-	);
-
-CREATE TABLE transaction_info(
-	transaction_number INT GENERATED ALWAYS AS IDENTITY, 
-	account_number INT, 
-	transaction_amount INT, 
-	PRIMARY KEY (transaction_number), 
-	FOREIGN KEY (account_number) REFERENCES account_info(account_number));

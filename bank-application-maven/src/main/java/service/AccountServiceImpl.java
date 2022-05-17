@@ -4,6 +4,8 @@ import java.util.List;
 
 import dao.AccountDao;
 import dao.AccountDaoDatabaseImpl;
+import exception.FundNotEnoughException;
+import exception.SystemException;
 import model.AccountPojo;
 
 public class AccountServiceImpl implements AccountService{
@@ -23,33 +25,33 @@ public class AccountServiceImpl implements AccountService{
 	}
 
 	@Override
-	public AccountPojo createAccount(AccountPojo accountPojo) {
+	public AccountPojo createAccount(AccountPojo accountPojo) throws SystemException {
 		return accountDao.createAccount(accountPojo);
 	}
 
 	@Override
-	public AccountPojo deposit(int accountNumber, double amount) {
+	public AccountPojo deposit(int accountNumber, double amount) throws SystemException {
 		return accountDao.deposit(accountNumber, amount);
 	}
 
 	@Override
-	public AccountPojo withdraw(int accountNumber, double amount) {
+	public AccountPojo withdraw(int accountNumber, double amount) throws SystemException, FundNotEnoughException{
 		return accountDao.withdraw(accountNumber, amount);
 
 	}
 
 	@Override
-	public List<AccountPojo> viewBalance() {
+	public List<AccountPojo> viewBalance() throws SystemException {
 		return accountDao.viewBalance();
 	}
 	
 	@Override
-	public AccountPojo getAccount(int accountNumber) {
+	public AccountPojo getAccount(int accountNumber) throws SystemException {
 		return accountDao.getAccount(accountNumber);
 	}
 
 	@Override
-	public void deleteAccount(int accountNumber) {
+	public void deleteAccount(int accountNumber) throws SystemException {
 		accountDao.deleteAccount(accountNumber);
 		
 	}	

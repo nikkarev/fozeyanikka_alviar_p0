@@ -2,6 +2,8 @@ package service;
 
 import dao.CustomerDao;
 import dao.CustomerDaoDatabaseImpl;
+import exception.LoginFailedException;
+import exception.SystemException;
 import model.CustomerPojo;
 
 public class CustomerServiceImpl implements CustomerService{
@@ -10,7 +12,6 @@ public class CustomerServiceImpl implements CustomerService{
 
 	public CustomerServiceImpl() {
 		customerDao = new CustomerDaoDatabaseImpl();
-		
 	}
 
 	public CustomerDao getCustomerDao() {
@@ -22,19 +23,17 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 
 	@Override
-	public CustomerPojo createCustomer(CustomerPojo customerPojo) {
+	public CustomerPojo createCustomer(CustomerPojo customerPojo) throws SystemException {
 		return customerDao.createCustomer(customerPojo);
 	}
 
-
 	@Override
-	public void deleteAccount(int customerId) {
+	public void deleteAccount(int customerId) throws SystemException {
 		customerDao.deleteAccount(customerId);
 	}
 
 	@Override
-	public CustomerPojo customerLogin(CustomerPojo customerPojo) {
+	public CustomerPojo customerLogin(CustomerPojo customerPojo) throws SystemException, LoginFailedException {
 		return customerDao.customerLogin(customerPojo);
 	}
-	
 }

@@ -15,7 +15,7 @@ public class DBUtil {
 	static {
 		try {
 			Class.forName("org.postgresql.Driver");
-//			System.out.println("Driver Loaded");
+			System.out.println("Driver Loaded");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
