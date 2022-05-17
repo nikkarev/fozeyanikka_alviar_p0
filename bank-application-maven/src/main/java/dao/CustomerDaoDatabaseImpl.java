@@ -60,7 +60,8 @@ public class CustomerDaoDatabaseImpl implements CustomerDao{
 			connection = DBUtil.establishConnection();
 			
 			Statement statement = connection.createStatement();
-			String query = "SELECT * FROM customer_info where customer_id =" +customerPojo.getCustomerId()+ "and password = "+customerPojo.getPassword() ;
+
+			String query = "SELECT * FROM customer_info WHERE customer_id= " +customerPojo.getCustomerId() + "and password=" + "'"+customerPojo.getPassword()+"'" ;
 			
 			ResultSet resultSet = statement.executeQuery(query);
 			

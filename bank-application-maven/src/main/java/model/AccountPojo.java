@@ -3,7 +3,7 @@ package model;
 public class AccountPojo {
 	private int accountNumber;
 	private double balance = 0.0;
-	private double amount = 0.0;
+	private double amount;
 	
 	public AccountPojo() {
 		super();
