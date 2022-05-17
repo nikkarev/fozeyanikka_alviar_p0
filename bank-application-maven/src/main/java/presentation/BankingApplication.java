@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import exception.FundNotEnoughException;
+import exception.LoginFailedException;
 import exception.SystemException;
 import model.AccountPojo;
 import model.CustomerPojo;
@@ -38,29 +39,29 @@ public class BankingApplication {
 			switch(option) {
 				// Register New Account
 				case 1:
-					CustomerPojo newCustomer = new CustomerPojo();
+					CustomerPojo newCustomerPojo = new CustomerPojo();
 					System.out.println("Please enter your First Name:");
 					scan.nextLine();
-					newCustomer.setCustomerFirstName(scan.nextLine());
+					newCustomerPojo.setCustomerFirstName(scan.nextLine());
 					System.out.println("Please enter your Last name:");
 					scan.nextLine();
-					newCustomer.setCustomerLastName(scan.nextLine());
+					newCustomerPojo.setCustomerLastName(scan.nextLine());
 					System.out.println("Create your username:");
 					scan.nextLine();
-					newCustomer.setUsername(scan.nextLine());
+					newCustomerPojo.setUsername(scan.nextLine());
 					System.out.println("Create your password:");
 					scan.nextLine();
-					newCustomer.setPassword(scan.nextLine());
+					newCustomerPojo.setPassword(scan.nextLine());
 					
-					AccountPojo newAccount = new AccountPojo();
+					AccountPojo newAccountPojo = new AccountPojo();
 					System.out.println("Please enter your initial balance:");
-					newAccount.setBalance(scan.nextDouble());
+					newAccountPojo.setBalance(scan.nextDouble());
 					
 					CustomerPojo customerPojo = null;
 					AccountPojo accountPojo = null;
 					try {
-						customerPojo = customerService.createCustomer(newCustomer);
-						accountPojo = accountService.createAccount(newAccount); 
+						customerPojo = customerService.createCustomer(newCustomerPojo);
+						accountPojo = accountService.createAccount(newAccountPojo); 
 					} catch (SystemException e) {
 						System.out.println(e.getMessage());
 						break;
@@ -76,6 +77,26 @@ public class BankingApplication {
 				// Login	
 				case 2:
 					CustomerPojo customerLoginPojo = new CustomerPojo();
+					System.out.println("Enter username:");
+					scan.nextLine();
+					customerLoginPojo.setUsername(scan.nextLine());
+					
+					System.out.println("Enter password:");
+					scan.nextLine();
+					customerLoginPojo.setPassword(scan.nextLine());
+					
+					CustomerPojo returningCustomer = null;
+					try {
+						returningCustomer = customerService.customerLogin(customerLoginPojo);
+					} catch (SystemException e2) {
+						e2.printStackTrace();
+						System.out.println(e2.getMessage());
+						break;
+					} catch (LoginFailedException e2) {
+						e2.printStackTrace();
+						System.out.println(e2.getMessage());
+						break;
+					}
 					
 					System.out.println("----------------------------------------");
 					System.out.println("Choose a menu");
@@ -94,25 +115,25 @@ public class BankingApplication {
 					switch(choice) {
 						// Register new user
 						case 1:
-							newCustomer = new CustomerPojo();
+							newCustomerPojo = new CustomerPojo();
 							System.out.println("Please enter your First Name:");
 							scan.nextLine();
-							newCustomer.setCustomerFirstName(scan.nextLine());
+							newCustomerPojo.setCustomerFirstName(scan.nextLine());
 							
 							System.out.println("Please enter your last name:");
 							scan.nextLine();
-							newCustomer.setCustomerLastName(scan.nextLine());
+							newCustomerPojo.setCustomerLastName(scan.nextLine());
 							
 							System.out.println("Create your username:");
 							scan.nextLine();
-							newCustomer.setUsername(scan.nextLine());
+							newCustomerPojo.setUsername(scan.nextLine());
 							
 							System.out.println("Create your password:");
 							scan.nextLine();
-							newCustomer.setPassword(scan.nextLine());
+							newCustomerPojo.setPassword(scan.nextLine());
 							
 							try {
-								customerPojo = customerService.createCustomer(newCustomer);
+								customerPojo = customerService.createCustomer(newCustomerPojo);
 							} catch(SystemException e) {
 								System.out.println(e.getMessage());
 								break;

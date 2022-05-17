@@ -59,15 +59,17 @@ public class CustomerDaoDatabaseImpl implements CustomerDao{
 		Connection connection = null;
 		
 		try {
+			connection = DBUtil.establishConnection();
+			
 			Statement statement = connection.createStatement();
-			String query = "select * from user_details where username="+customerPojo.getUsername()+
-					"and password= '"+customerPojo.getPassword() ;
+			String query = "SELECT * FROM customer_info where username =" +customerPojo.getUsername()+ "and password = "+customerPojo.getPassword() ;
 			
 			ResultSet resultSet = statement.executeQuery(query);
 			
 			int counter = 0;
 			while(resultSet.next()) {
 				counter ++;
+//				customerPojo.setCustomerId(resultSet.getInt(1));
 				customerPojo.setCustomerFirstName(resultSet.getString(3));
 				customerPojo.setCustomerLastName(resultSet.getString(4));
 			}
