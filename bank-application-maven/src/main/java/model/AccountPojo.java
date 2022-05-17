@@ -1,21 +1,9 @@
 package model;
 
-/*
- * POJO has no references to any framework.
- * POJO has no naming convention for its properties and methods
- * POJO doesn't follow any real convention for constructing, 
- * accessing, or modifying the class's state.
- * POJO increases the readability & re-usability of a Java program.
- * 
- * POJO class contains variables and their Getters and Setters
- * 
- * POJO class are used to define the object entities
- */
 public class AccountPojo {
 	private int accountNumber;
-//	private String accountType;
-	private double balance;
-	private double amount;
+	private double balance = 0.0;
+	private double amount = 0.0;
 	
 	public AccountPojo() {
 		super();
