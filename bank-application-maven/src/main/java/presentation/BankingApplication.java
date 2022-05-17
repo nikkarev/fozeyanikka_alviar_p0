@@ -40,15 +40,6 @@ public class BankingApplication {
 				// Register New Account
 				case 1:
 					CustomerPojo newCustomerPojo = new CustomerPojo();
-					System.out.println("Please enter your First Name:");
-					scan.nextLine();
-					newCustomerPojo.setCustomerFirstName(scan.nextLine());
-					System.out.println("Please enter your Last name:");
-					scan.nextLine();
-					newCustomerPojo.setCustomerLastName(scan.nextLine());
-					System.out.println("Create your username:");
-					scan.nextLine();
-					newCustomerPojo.setUsername(scan.nextLine());
 					System.out.println("Create your password:");
 					scan.nextLine();
 					newCustomerPojo.setPassword(scan.nextLine());
@@ -77,9 +68,10 @@ public class BankingApplication {
 				// Login	
 				case 2:
 					CustomerPojo customerLoginPojo = new CustomerPojo();
-					System.out.println("Enter username:");
-					scan.nextLine();
-					customerLoginPojo.setUsername(scan.nextLine());
+					
+					System.out.println("Enter your Customer ID: :");
+					scan.nextInt();
+					customerLoginPojo.setCustomerId(scan.nextInt());;
 					
 					System.out.println("Enter password:");
 					scan.nextLine();
@@ -101,11 +93,11 @@ public class BankingApplication {
 					System.out.println("----------------------------------------");
 					System.out.println("Choose a menu");
 					System.out.println("----------------------------------------");
-					System.out.println("1. Register New User");
+					System.out.println("1. Register New User"); // not a user story
 					System.out.println("2. Deposit");
 					System.out.println("3. Withdraw");
 					System.out.println("4. View Balance");
-					System.out.println("5. Delete Account");
+					System.out.println("5. Delete Account"); // not a user story
 					System.out.println("5. Logout");
 					System.out.println("----------------------------------------");
 					System.out.println("Please enter your option:");
@@ -116,21 +108,14 @@ public class BankingApplication {
 						// Register new user
 						case 1:
 							newCustomerPojo = new CustomerPojo();
-							System.out.println("Please enter your First Name:");
-							scan.nextLine();
-							newCustomerPojo.setCustomerFirstName(scan.nextLine());
 							
-							System.out.println("Please enter your last name:");
-							scan.nextLine();
-							newCustomerPojo.setCustomerLastName(scan.nextLine());
+							System.out.println("Enter your Customer ID: :");
+							scan.nextInt();
+							customerLoginPojo.setCustomerId(scan.nextInt());;
 							
-							System.out.println("Create your username:");
+							System.out.println("Enter password:");
 							scan.nextLine();
-							newCustomerPojo.setUsername(scan.nextLine());
-							
-							System.out.println("Create your password:");
-							scan.nextLine();
-							newCustomerPojo.setPassword(scan.nextLine());
+							customerLoginPojo.setPassword(scan.nextLine());
 							
 							try {
 								customerPojo = customerService.createCustomer(newCustomerPojo);
@@ -160,9 +145,8 @@ public class BankingApplication {
 								System.out.println(e.getMessage());
 								break;
 							}
-							depositPojo.setBalance(depositPojo.getBalance()+depositAmount);
-							depositPojo.setAmount(depositAmount);
-							
+							depositPojo.setBalance(depositPojo.getBalance() + depositAmount);
+
 							System.out.println("----------------------------------------");
 							System.out.println("Congratulations! You have successfully deposited " +depositPojo.getAmount()+ "into Account ID: " +depositPojo.getAccountNumber());
 							System.out.println("Your new balance is:" + depositPojo.getBalance());
@@ -171,33 +155,26 @@ public class BankingApplication {
 						
 						// Withdraw
 						case 3:
-							AccountPojo withdrawPojo;
-							
+							AccountPojo withdrawPojo = null;
+
 							System.out.println("Enter the Account ID:");
 							int withdrawID = scan.nextInt();
-							
+
 							System.out.println("Enter the amount you want to withdraw:");
 							double withdrawAmount = scan.nextDouble();
-							depositPojo = null;
-							withdrawPojo = null;
-						try {
-							depositPojo = accountService.deposit(withdrawID, withdrawAmount);
+
 							try {
 								withdrawPojo = accountService.withdraw(withdrawID, withdrawAmount);
 							} catch (FundNotEnoughException e) {
 								e.printStackTrace();
 								System.out.println(e.getMessage());
+							} catch (SystemException e) {
+								e.printStackTrace();
+								System.out.println(e.getMessage());
+								break;
 							}
-						} catch (SystemException e) {
-							e.printStackTrace();
-							System.out.println(e.getMessage());
-							break;
-						}
-							
-							System.out.println("----------------------------------------");
-							System.out.println("Congratulations! You have successfully withdrawn " +withdrawPojo.getAmount()+ "into Account ID: " +withdrawPojo.getAccountNumber());
-							System.out.println("Your new balance is:" +withdrawPojo.getBalance());
-							System.out.println("----------------------------------------");
+							withdrawPojo.setBalance(withdrawPojo.getBalance() + withdrawAmount);
+
 							break;
 							
 						// View Balance
@@ -209,7 +186,7 @@ public class BankingApplication {
 							
 							System.out.println("----------------------------------------");
 							System.out.println("Balances: ");
-							viewAllBalance.forEach((balance) -> System.out.println(balance.getBalance()));
+//							viewAllBalance.forEach((balance) -> System.out.println(balance.getBalance()));
 							System.out.println("----------------------------------------");
 							System.out.println("Would you like to go back to the main menu? (y/n)");
 							choice = scan.next().charAt(0);

@@ -44,7 +44,7 @@ public class AccountDaoDatabaseImpl implements AccountDao{
 			connection = DBUtil.establishConnection();
 			Statement statement = connection.createStatement();
 			
-			String query = " UPDATE account_info SET balance = balance " + accountPojo.getAmount() +  "WHERE accountNumber = " +accountPojo.getAccountNumber() + "returning account_number";
+			String query = " UPDATE account_info SET balance = balance " + accountPojo.getBalance() +  "WHERE accountNumber = " +accountPojo.getAccountNumber() + "returning account_number";
 			
 			int rowsAffected = statement.executeUpdate(query);
 		} catch (SQLException e) {

@@ -45,7 +45,5 @@ public class AccountPojo {
 		return "AccountPojo [accountNumber=" + accountNumber + "balance="
 				+ balance + ", amount=" + amount + "]";
 	}
-
-	
 	
 }

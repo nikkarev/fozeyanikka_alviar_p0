@@ -23,14 +23,12 @@ public class CustomerDaoDatabaseImpl implements CustomerDao{
 			connection = DBUtil.establishConnection();
 			Statement statement = connection.createStatement();
 			
-			String query= "INSERT INTO customer_info(first_name, last_name, username, password) "
-					+ "VALUES ('"+customerPojo.getCustomerFirstName()+"', "
-							+ "'"+customerPojo.getCustomerLastName()+"', '"+customerPojo.getUsername()+"', "
-									+ "'"+customerPojo.getPassword()+"' ) returning customer_id";
+			String query= "INSERT INTO customer_info(password)"
+					+ "VALUES ('"+customerPojo.getPassword()+"' ) returning customer_id";
 			
 			resultSet = statement.executeQuery(query);
 			resultSet.next();
-			
+
 			customerPojo.setCustomerId(resultSet.getInt(1));
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -62,16 +60,14 @@ public class CustomerDaoDatabaseImpl implements CustomerDao{
 			connection = DBUtil.establishConnection();
 			
 			Statement statement = connection.createStatement();
-			String query = "SELECT * FROM customer_info where username =" +customerPojo.getUsername()+ "and password = "+customerPojo.getPassword() ;
+			String query = "SELECT * FROM customer_info where customer_id =" +customerPojo.getCustomerId()+ "and password = "+customerPojo.getPassword() ;
 			
 			ResultSet resultSet = statement.executeQuery(query);
 			
 			int counter = 0;
 			while(resultSet.next()) {
 				counter ++;
-//				customerPojo.setCustomerId(resultSet.getInt(1));
-				customerPojo.setCustomerFirstName(resultSet.getString(3));
-				customerPojo.setCustomerLastName(resultSet.getString(4));
+				customerPojo.setCustomerId(resultSet.getInt(1));
 			}
 			if(counter == 0) {
 				throw new LoginFailedException();
