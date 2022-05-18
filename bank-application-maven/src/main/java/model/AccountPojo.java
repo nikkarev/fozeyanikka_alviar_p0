@@ -3,17 +3,15 @@ package model;
 public class AccountPojo {
 	private int accountNumber;
 	private double balance = 0.0;
-	private double amount;
 	
 	public AccountPojo() {
 		super();
 	}
 
-	public AccountPojo(int accountNumber, double balance, double amount) {
+	public AccountPojo(int accountNumber, double balance) {
 		super();
 		this.accountNumber = accountNumber;
 		this.balance = balance;
-		this.amount = amount;
 	}
 
 	public int getAccountNumber() {
@@ -32,18 +30,8 @@ public class AccountPojo {
 		this.balance = balance;
 	}
 
-	public double getAmount() {
-		return amount;
-	}
-
-	public void setAmount(double amount) {
-		this.amount = amount;
-	}
-
 	@Override
 	public String toString() {
-		return "AccountPojo [accountNumber=" + accountNumber + "balance="
-				+ balance + ", amount=" + amount + "]";
+		return "AccountPojo [accountNumber=" + accountNumber + ", balance=" + balance + "]";
 	}
-	
 }

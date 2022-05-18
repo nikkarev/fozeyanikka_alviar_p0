@@ -29,31 +29,20 @@ public class AccountServiceImpl implements AccountService{
 		return accountDao.createAccount(accountPojo);
 	}
 
-	@Override
-	public AccountPojo deposit(int accountNumber, double amount) throws SystemException {
-		return accountDao.deposit(accountNumber, amount);
-	}
-
-	@Override
-	public AccountPojo withdraw(int accountNumber, double amount) throws SystemException, FundNotEnoughException{
-		return accountDao.withdraw(accountNumber, amount);
-
-	}
-
-	@Override
-	public List<AccountPojo> viewBalance() throws SystemException {
-		return accountDao.viewBalance();
-	}
 	
 	@Override
-	public AccountPojo getAccount(int accountNumber) throws SystemException {
-		return accountDao.getAccount(accountNumber);
+	public AccountPojo deposit(AccountPojo accountPojo, double amount) throws SystemException {
+		return accountDao.deposit(accountPojo, amount);
 	}
 
 	@Override
-	public void deleteAccount(int accountNumber) throws SystemException {
-		accountDao.deleteAccount(accountNumber);
-		
-	}	
+	public AccountPojo withdraw(AccountPojo accountPojo, double amount) throws SystemException, FundNotEnoughException {
+		return accountDao.withdraw(accountPojo, amount);
+	}
+
+	@Override
+	public AccountPojo viewBalance(AccountPojo accountPojo) throws SystemException {
+		return accountDao.viewBalance(accountPojo);
+	}
 
 }

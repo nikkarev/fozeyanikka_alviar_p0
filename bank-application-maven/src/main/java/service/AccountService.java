@@ -10,13 +10,10 @@ public interface AccountService {
 	
 	AccountPojo createAccount(AccountPojo accountPojo) throws SystemException;
 
-	AccountPojo deposit(int accountNumber, double amount) throws SystemException; 
+	AccountPojo deposit(AccountPojo accountPojo, double amount) throws SystemException; 
 
-	AccountPojo withdraw(int accountNumber, double amount) throws SystemException, FundNotEnoughException; 
+	AccountPojo withdraw(AccountPojo accountPojo, double amount) throws SystemException, FundNotEnoughException; 
 
-	List<AccountPojo> viewBalance() throws SystemException;
+	AccountPojo viewBalance(AccountPojo accountPojo) throws SystemException;
 	
-	AccountPojo getAccount(int accountNumber) throws SystemException;
-	
-	void deleteAccount(int accountNumber) throws SystemException;
 }
