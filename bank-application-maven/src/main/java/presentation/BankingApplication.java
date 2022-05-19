@@ -71,7 +71,6 @@ public class BankingApplication {
 					AccountPojo returningAccountPojo = new AccountPojo();
 					
 					System.out.println("Enter your Customer ID: ");
-					scan.nextLine();
 					customerLoginPojo.setCustomerId(scan.nextInt());
 					
 					System.out.println("Enter password:");
@@ -139,19 +138,25 @@ public class BankingApplication {
 							
 							// Deposit
 							case 2:
-								AccountPojo depositPojoTemp = new AccountPojo();
+								AccountPojo depositPojo = new AccountPojo();	
+								
+								System.out.println("Enter the Account ID you want to deposit funds into: ");
+								int accountIdInput = scan.nextInt();
+								depositPojo.setAccountNumber(accountIdInput);
 								
 								System.out.println("Enter the amount you want to deposit:");
 								double depositAmount = scan.nextDouble();
-								
-								AccountPojo depositPojo = null;
+															
 								try {
-									depositPojo = accountService.deposit(depositPojoTemp, depositAmount);
+									depositPojo = accountService.deposit(depositPojo);
 								} catch (SystemException e) {
 									e.printStackTrace();
 									System.out.println(e.getMessage());
 									break;
 								}
+								
+								double newBalance = depositPojo.getBalance() + depositAmount;
+								depositPojo.setBalance(newBalance);
 								
 								System.out.println("----------------------------------------");
 								System.out.println("Congratulations! You have successfully deposited " + depositAmount + " into Account ID: " +depositPojo.getAccountNumber());

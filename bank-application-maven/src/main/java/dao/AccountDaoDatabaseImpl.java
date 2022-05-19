@@ -33,31 +33,25 @@ public class AccountDaoDatabaseImpl implements AccountDao{
 		}
 		return accountPojo;
 	}
-
+	
+	
 	@Override
-	public AccountPojo deposit(AccountPojo accountPojo, double amount) throws SystemException {
+	public AccountPojo deposit(AccountPojo accountPojo) throws SystemException {
 		Connection connection = null;
 		
 		try {
 			connection = DBUtil.establishConnection();
 			Statement statement = connection.createStatement();
 			
-			String query1 = "SELECT balance FROM account_info WHERE accountNumber = " + accountPojo.getAccountNumber() + "returning account_number";
+			String query = "UPDATE account_info SET balance=" +accountPojo.getBalance()+ "WHERE account_number = " + accountPojo.getAccountNumber();
+			int rowsAffected = statement.executeUpdate(query);
 			
-			ResultSet resultSet = statement.executeQuery(query1);
-			
-			while(resultSet.next()) {
-				double newBalance = resultSet.getDouble(1) + amount;
-				accountPojo.setBalance(newBalance);
-				
-				String query2 = "UPDATE account_info SET balance=" +accountPojo.getBalance()+ "WHERE accountNumber = " + accountPojo.getAccountNumber() ;
-				int rowsAffected = statement.executeUpdate(query2);
-			}
 		} catch (SQLException e) {
 			throw new SystemException();
 		}
-		return accountPojo;
+		return null;
 	}
+
 
 	@Override
 	public AccountPojo withdraw(AccountPojo accountPojo, double amount) throws SystemException, FundNotEnoughException {
@@ -90,7 +84,7 @@ public class AccountDaoDatabaseImpl implements AccountDao{
 		}
 		return accountPojo;
 	}
-	
+
 	@Override
 	public AccountPojo viewBalance(AccountPojo accountPojo) throws SystemException {
 		Connection connection = null;

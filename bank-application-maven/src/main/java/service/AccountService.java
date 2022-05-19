@@ -10,7 +10,7 @@ public interface AccountService {
 	
 	AccountPojo createAccount(AccountPojo accountPojo) throws SystemException;
 
-	AccountPojo deposit(AccountPojo accountPojo, double amount) throws SystemException; 
+	AccountPojo deposit(AccountPojo accountPojo) throws SystemException; 
 
 	AccountPojo withdraw(AccountPojo accountPojo, double amount) throws SystemException, FundNotEnoughException; 
 
