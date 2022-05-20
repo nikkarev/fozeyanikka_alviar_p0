@@ -22,9 +22,11 @@ public class AccountDaoDatabaseImpl implements AccountDao{
 
 			connection = DBUtil.establishConnection();
 			Statement statement = connection.createStatement();
+
+//			String query= "INSERT INTO account_info VALUES ("+accountPojo.getBalance() + ") INNER JOIN customer_info ON account_number = customer_id returning account_number";
 			
-			String query= "INSERT INTO account_info(balance) VALUES ("+accountPojo.getBalance() + ") returning account_number";
-			
+			String query= "INSERT INTO account_info VALUES ("+accountPojo.getBalance() + ") INNER JOIN customer_info ON account_number = customer_id returning account_number";
+
 			resultSet = statement.executeQuery(query);
 			resultSet.next();
 			accountPojo.setAccountNumber(resultSet.getInt(1));
@@ -33,52 +35,37 @@ public class AccountDaoDatabaseImpl implements AccountDao{
 		}
 		return accountPojo;
 	}
-	
-	
+
+
 	@Override
 	public AccountPojo deposit(AccountPojo accountPojo) throws SystemException {
 		Connection connection = null;
-		
+
 		try {
 			connection = DBUtil.establishConnection();
 			Statement statement = connection.createStatement();
-			
-			String query = "UPDATE account_info SET balance=" +accountPojo.getBalance()+ "WHERE account_number = " + accountPojo.getAccountNumber();
+
+			String query = "UPDATE account_info SET balance=" +accountPojo.getBalance()+ "WHERE account_number=" + accountPojo.getAccountNumber();
 			int rowsAffected = statement.executeUpdate(query);
-			
+
 		} catch (SQLException e) {
 			throw new SystemException();
 		}
-		return null;
+		return accountPojo;
 	}
 
 
 	@Override
-	public AccountPojo withdraw(AccountPojo accountPojo, double amount) throws SystemException, FundNotEnoughException {
+	public AccountPojo withdraw(AccountPojo accountPojo) throws SystemException, FundNotEnoughException {
 		Connection connection = null;
 
 		try {
 			connection = DBUtil.establishConnection();
 			Statement statement = connection.createStatement();
-			
-			String query1 = "SELECT balance FROM account_info WHERE account_number = " + accountPojo.getAccountNumber();
-			
-			ResultSet resultSet = statement.executeQuery(query1);
-			
-			while(resultSet.next()) {
-				double currentBalance = resultSet.getDouble(1);
-				if(amount > currentBalance) {
-					throw new FundNotEnoughException();
-				} 
-				else {
-					double newBalance = currentBalance - amount ;
-					accountPojo.setBalance(newBalance);
-					
-					String query2 = "UPDATE account_info SET balance = balance" +accountPojo.getBalance()+ "WHERE account_number = " +accountPojo.getAccountNumber(); 
 
-					int rowsAffected = statement.executeUpdate(query2);
-				}
-			}
+			String query = "UPDATE account_info SET balance=" +accountPojo.getBalance()+ "WHERE account_number=" +accountPojo.getAccountNumber(); 
+			int rowsAffected = statement.executeUpdate(query);
+			
 		} catch (SQLException e) {
 			throw new SystemException();
 		}
@@ -88,15 +75,15 @@ public class AccountDaoDatabaseImpl implements AccountDao{
 	@Override
 	public AccountPojo viewBalance(AccountPojo accountPojo) throws SystemException {
 		Connection connection = null;
-		
+
 		try {
 			connection = DBUtil.establishConnection();
 			Statement statement = connection.createStatement();
-			
-			String query = " SELECT balance FROM account_info where account_number = " +accountPojo.getAccountNumber();
-			
+
+			String query = "SELECT balance FROM account_info where account_number=" +accountPojo.getAccountNumber();
+
 			ResultSet resultSet = statement.executeQuery(query);
-			
+
 			while(resultSet.next()) {
 				accountPojo.setBalance(resultSet.getDouble(1));
 			}

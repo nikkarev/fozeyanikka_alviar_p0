@@ -4,10 +4,11 @@ import dao.CustomerDao;
 import dao.CustomerDaoDatabaseImpl;
 import exception.LoginFailedException;
 import exception.SystemException;
+import model.AccountPojo;
 import model.CustomerPojo;
 
 public class CustomerServiceImpl implements CustomerService{
-	
+
 	CustomerDao customerDao;
 
 	public CustomerServiceImpl() {

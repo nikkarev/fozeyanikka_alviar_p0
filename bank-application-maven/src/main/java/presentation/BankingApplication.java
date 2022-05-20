@@ -115,6 +115,7 @@ public class BankingApplication {
 							// Register new user
 							case 1:
 								newCustomerPojo = new CustomerPojo();
+								newAccountPojo = new AccountPojo();
 								
 								System.out.println("Enter your Customer ID: :");
 								scan.nextInt();
@@ -143,53 +144,71 @@ public class BankingApplication {
 								System.out.println("Enter the Account ID you want to deposit funds into: ");
 								int accountIdInput = scan.nextInt();
 								depositPojo.setAccountNumber(accountIdInput);
-								
-								System.out.println("Enter the amount you want to deposit:");
-								double depositAmount = scan.nextDouble();
 															
 								try {
-									depositPojo = accountService.deposit(depositPojo);
+									depositPojo = accountService.viewBalance(depositPojo);
 								} catch (SystemException e) {
-									e.printStackTrace();
 									System.out.println(e.getMessage());
 									break;
 								}
 								
+								System.out.println("Enter the amount you want to deposit:");
+								double depositAmount = scan.nextDouble();
+								
 								double newBalance = depositPojo.getBalance() + depositAmount;
 								depositPojo.setBalance(newBalance);
-								
+
+								try {
+									accountService.deposit(depositPojo);
+								} catch (SystemException e2) {
+									System.out.println(e2.getMessage());
+								}
+
 								System.out.println("----------------------------------------");
-								System.out.println("Congratulations! You have successfully deposited " + depositAmount + " into Account ID: " +depositPojo.getAccountNumber());
-								System.out.println("Your new balance is:" + depositPojo.getBalance());
+								System.out.println("Congratulations! You have successfully deposited $" + depositAmount + " into Account Number: " +depositPojo.getAccountNumber());
+								System.out.println("Your new balance is: $" + depositPojo.getBalance());
 								System.out.println("----------------------------------------");
 								break;
 							
 							// Withdraw
 							case 3:
-								AccountPojo withdrawPojoTemp = new AccountPojo();
+								AccountPojo withdrawPojo = new AccountPojo();
 								
-								withdrawPojoTemp.setAccountNumber(returningUserId);
+								System.out.println("Enter the Account ID you want to withdraw funds from: ");
+								int withdrawalAccountId = scan.nextInt();
+								withdrawPojo.setAccountNumber(withdrawalAccountId);
+								
+								try {
+									withdrawPojo = accountService.viewBalance(withdrawPojo);
+								} catch (SystemException e) {
+									System.out.println(e.getMessage());
+									break;
+								}
 								
 								System.out.println("Enter the amount you want to withdraw:");
 								double withdrawalAmount = scan.nextDouble();
 								
-								AccountPojo withdrawPojo = null;
-								try {
-									withdrawPojo = accountService.withdraw(withdrawPojoTemp, withdrawalAmount);
-								} catch (FundNotEnoughException e) {
-									e.printStackTrace();
-									System.out.println(e.getMessage());
-								} catch (SystemException e) {
-									e.printStackTrace();
-									System.out.println(e.getMessage());
+								if( withdrawalAmount > withdrawPojo.getBalance() ) {
+									System.out.println("You do not have enough funds for this withdrawal. \nPlease try again.");
+									break;
+								} else {
+									double updatedBalance = withdrawPojo.getBalance() - withdrawalAmount;
+									withdrawPojo.setBalance(updatedBalance);
+									
+									try {
+										accountService.withdraw(withdrawPojo);
+									} catch (SystemException e) {
+										System.out.println(e.getMessage());
+									} catch (FundNotEnoughException e) {
+										System.out.println(e.getMessage());
+									}
+									System.out.println("----------------------------------------");
+									System.out.println("Congratulations! You have successfully withdrawn $" + withdrawalAmount + " from Account Number: " +withdrawPojo.getAccountNumber());
+									System.out.println("Your new balance is: $" + withdrawPojo.getBalance());
+									System.out.println("----------------------------------------");
 									break;
 								}
-
-								System.out.println("----------------------------------------");
-								System.out.println("Congratulations! You have successfully withdrawn $" + withdrawalAmount );
-								System.out.println("Your new balance is: " + withdrawPojo.getBalance());
-								System.out.println("----------------------------------------");
-								break;
+								
 								
 							// View Balance
 							case 4:
@@ -210,9 +229,7 @@ public class BankingApplication {
 									choice = scan.next().charAt(0);
 									break;
 								}
-								
 							} catch (SystemException e1) {
-								e1.printStackTrace();
 								System.out.println(e1.getMessage());
 							}
 							

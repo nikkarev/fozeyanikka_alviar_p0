@@ -4,6 +4,7 @@ import java.util.List;
 
 import exception.LoginFailedException;
 import exception.SystemException;
+import model.AccountPojo;
 import model.CustomerPojo;
 
 public interface CustomerDao {

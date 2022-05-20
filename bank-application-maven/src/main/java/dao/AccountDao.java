@@ -12,7 +12,7 @@ public interface AccountDao {
 
 	AccountPojo deposit(AccountPojo accountPojo) throws SystemException; 
 
-	AccountPojo withdraw(AccountPojo accountPojo, double amount) throws SystemException, FundNotEnoughException; 
+	AccountPojo withdraw(AccountPojo accountPojo) throws SystemException, FundNotEnoughException; 
 
 	AccountPojo viewBalance(AccountPojo accountPojo) throws SystemException;
 }

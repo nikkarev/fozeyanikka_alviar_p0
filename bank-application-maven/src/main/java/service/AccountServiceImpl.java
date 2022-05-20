@@ -35,8 +35,8 @@ public class AccountServiceImpl implements AccountService{
 	}
 
 	@Override
-	public AccountPojo withdraw(AccountPojo accountPojo, double amount) throws SystemException, FundNotEnoughException {
-		return accountDao.withdraw(accountPojo, amount);
+	public AccountPojo withdraw(AccountPojo accountPojo) throws SystemException, FundNotEnoughException {
+		return accountDao.withdraw(accountPojo);
 	}
 
 	@Override
