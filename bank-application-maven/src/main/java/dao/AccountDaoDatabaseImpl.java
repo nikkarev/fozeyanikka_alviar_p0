@@ -1,20 +1,29 @@
 package dao;
 
 import java.sql.Connection;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import exception.FundNotEnoughException;
 import exception.SystemException;
 import model.AccountPojo;
 
 public class AccountDaoDatabaseImpl implements AccountDao{
+	
+	private static final Logger LOG = LogManager.getLogger(AccountDaoDatabaseImpl.class);
 
 	@Override
 	public AccountPojo createAccount(AccountPojo accountPojo) throws SystemException {
+		
+		LOG.info("Entered into createAccount() in Dao Layer...");
+		
 		Connection connection = null;
 
 		try {
@@ -33,6 +42,9 @@ public class AccountDaoDatabaseImpl implements AccountDao{
 		} catch (SQLException e) {
 			throw new SystemException();
 		}
+		
+		LOG.info("Exited createAccount() in Dao...");
+		
 		return accountPojo;
 	}
 
@@ -40,6 +52,8 @@ public class AccountDaoDatabaseImpl implements AccountDao{
 	@Override
 	public AccountPojo deposit(AccountPojo accountPojo) throws SystemException {
 		Connection connection = null;
+		
+		LOG.info("Entered into deposit() in Dao Layer...");
 
 		try {
 			connection = DBUtil.establishConnection();
@@ -51,12 +65,18 @@ public class AccountDaoDatabaseImpl implements AccountDao{
 		} catch (SQLException e) {
 			throw new SystemException();
 		}
+		
+		LOG.info("Entered into deposit() in Dao Layer...");
+		
 		return accountPojo;
 	}
 
 
 	@Override
 	public AccountPojo withdraw(AccountPojo accountPojo) throws SystemException, FundNotEnoughException {
+		
+		LOG.info("Entered into withdraw() in Dao Layer...");
+		
 		Connection connection = null;
 
 		try {
@@ -69,11 +89,17 @@ public class AccountDaoDatabaseImpl implements AccountDao{
 		} catch (SQLException e) {
 			throw new SystemException();
 		}
+		
+		LOG.info("Entered into withdraw() in Dao Layer...");
+		
 		return accountPojo;
 	}
 
 	@Override
 	public AccountPojo viewBalance(AccountPojo accountPojo) throws SystemException {
+		
+		LOG.info("Entered into viewBalance() in Dao Layer...");
+		
 		Connection connection = null;
 
 		try {
@@ -90,6 +116,9 @@ public class AccountDaoDatabaseImpl implements AccountDao{
 		} catch (SQLException e) {
 			throw new SystemException();
 		}
+		
+		LOG.info("Entered into viewBalance() in Dao Layer...");
+		
 		return accountPojo;
 	}
 }
