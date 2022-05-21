@@ -31,11 +31,12 @@ public class AccountDaoDatabaseImpl implements AccountDao{
 
 			connection = DBUtil.establishConnection();
 			Statement statement = connection.createStatement();
-
-//			String query= "INSERT INTO account_info VALUES ("+accountPojo.getBalance() + ") INNER JOIN customer_info ON account_number = customer_id returning account_number";
 			
-			String query= "INSERT INTO account_info VALUES ("+accountPojo.getBalance() + ") INNER JOIN customer_info ON account_number = customer_id returning account_number";
+//			String query= "INSERT INTO account_info VALUES ("+accountPojo.getBalance() + ") account_number = customer_id returning account_number";
 
+			String query = "INSERT INTO account_info(balance)"
+					+ "VALUES ("+accountPojo.getBalance() +" ) returning account_number";
+			
 			resultSet = statement.executeQuery(query);
 			resultSet.next();
 			accountPojo.setAccountNumber(resultSet.getInt(1));

@@ -25,17 +25,17 @@ public class CustomerDaoDatabaseImpl implements CustomerDao{
 			Statement statement = connection.createStatement();
 			
 			String query = "INSERT INTO customer_info(password)"
-					+ "VALUES ('"+customerPojo.getPassword()+"' ) returning customer_id";
+					+ "VALUES ( '"+customerPojo.getPassword()+"' ) returning customer_id";
 			
 			resultSet = statement.executeQuery(query);
 			resultSet.next();
 
 			customerPojo.setCustomerId(resultSet.getInt(1));
 			
-			String query2 = "INSERT INTO customer_info(customer_id) SELECT customer_id FROM account_info ORDER BY customer_id DESC LIMIT 1 returning customer_id";
-			resultSet = statement.executeQuery(query2);
-			resultSet.next();
-			
+//			String query2 = "INSERT INTO customer_info(customer_id) SELECT customer_id FROM account_info ORDER BY customer_id DESC LIMIT 1 returning customer_id";
+//			resultSet = statement.executeQuery(query2);
+//			resultSet.next();
+//			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new SystemException();
