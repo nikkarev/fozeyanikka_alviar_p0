@@ -33,14 +33,18 @@ public class AccountDaoDatabaseImpl implements AccountDao{
 			String query = "INSERT INTO account_info(balance)"
 					+ "VALUES ("+accountPojo.getBalance()+") returning account_id";
 			
-			String query2 = "INSERT INTO customer_info(account_id) VALUES ("+customerPojo.getAccountId()+") returning account_id ";
+//			String query2 = "INSERT INTO customer_info(account_id) VALUES ("+accountPojo.getAccountId()+") returning account_id ";
+//			
+			String query2 = "INSERT INTO customer_info(account_id) SELECT account_id FROM account_info WHERE account_id= "+accountPojo.getAccountId() + "ORDER BY customer_id DESC LIMIT 1" ;
 			
 			ResultSet resultSet1 = statement.executeQuery(query);
 			resultSet1.next();
+			
 			ResultSet resultSet2 = statement.executeQuery(query2);
 			resultSet2.next();
+			
 			accountPojo.setAccountId(resultSet1.getInt(1));
-//			customerPojo.setAccountId(resultSet2.getInt(1));
+			customerPojo.setAccountId(resultSet2.getInt(1));
 			
 		} catch (SQLException e) {
 			throw new SystemException();

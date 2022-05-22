@@ -88,7 +88,6 @@ public class BankingApplication {
 						System.out.println("Username or password is incorrect. Please enter a valid username or password.");
 						break;
 					} else {
-						
 						System.out.println("----------------------------------------");
 						System.out.println("Choose a menu");
 						System.out.println("----------------------------------------");
@@ -108,20 +107,15 @@ public class BankingApplication {
 								AccountPojo newAccountPojo = new AccountPojo();
 								CustomerPojo returningCustomerPojo = new CustomerPojo();
 								
-								System.out.println("Enter the Customer ID which this account belongs to: ");
-								int customerIdAccount = scan.nextInt();
-								returningCustomerPojo.setAccountId(customerIdAccount);
-								
 								System.out.println("Enter your Initial Balance: ");
-//								scan.nextDouble();
 								newAccountPojo.setBalance(scan.nextDouble());
 //								newAccountPojo.getAccountId();
 //								newAccountPojo.setAccountId(returningCustomerId);
 								
+								
 								AccountPojo accountPojo;
 								try {
 									accountPojo = accountService.createAccount(newAccountPojo, returningCustomerPojo);
-									
 								} catch(SystemException e) {
 									System.out.println(e.getMessage());
 									e.printStackTrace();
