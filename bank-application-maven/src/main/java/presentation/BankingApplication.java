@@ -82,9 +82,9 @@ public class BankingApplication {
 						break;
 					}
 					
-					int returningUserId = returningCustomer.getCustomerId();
+					int returningCustomerId = returningCustomer.getCustomerId();
 					
-					if(returningUserId == 0) {
+					if(returningCustomerId == 0) {
 						System.out.println("Username or password is incorrect. Please enter a valid username or password.");
 						break;
 					} else {
@@ -106,22 +106,29 @@ public class BankingApplication {
 							// Register New Account
 							case 1:
 								AccountPojo newAccountPojo = new AccountPojo();
+								CustomerPojo returningCustomerPojo = new CustomerPojo();
+								
+								System.out.println("Enter the Customer ID which this account belongs to: ");
+								int customerIdAccount = scan.nextInt();
+								returningCustomerPojo.setAccountId(customerIdAccount);
 								
 								System.out.println("Enter your Initial Balance: ");
 //								scan.nextDouble();
 								newAccountPojo.setBalance(scan.nextDouble());
-								newAccountPojo.setAccountNumber(returningUserId);
+//								newAccountPojo.getAccountId();
+//								newAccountPojo.setAccountId(returningCustomerId);
 								
 								AccountPojo accountPojo;
 								try {
-									accountPojo = accountService.createAccount(newAccountPojo);
+									accountPojo = accountService.createAccount(newAccountPojo, returningCustomerPojo);
+									
 								} catch(SystemException e) {
 									System.out.println(e.getMessage());
 									e.printStackTrace();
 									break;
 								}
 								System.out.println("----------------------------------------");
-								System.out.println("Congratulations! Account successfully created! \nYour Account ID is: " + accountPojo.getAccountNumber());
+								System.out.println("Congratulations! Account successfully created! \nYour Account ID is: " + accountPojo.getAccountId());
 								System.out.println("Your Initial Balance is: $" + accountPojo.getBalance());
 								System.out.println("----------------------------------------");
 								break;
@@ -132,7 +139,7 @@ public class BankingApplication {
 								
 								System.out.println("Enter the Account ID you want to deposit funds into: ");
 								int accountIdInput = scan.nextInt();
-								depositPojo.setAccountNumber(accountIdInput);
+								depositPojo.setAccountId(accountIdInput);
 															
 								try {
 									depositPojo = accountService.viewBalance(depositPojo);
@@ -155,7 +162,7 @@ public class BankingApplication {
 								}
 
 								System.out.println("----------------------------------------");
-								System.out.println("Congratulations! You have successfully deposited $" + depositAmount + " into Account Number " +depositPojo.getAccountNumber());
+								System.out.println("Congratulations! You have successfully deposited $" + depositAmount + " into Account ID: " +depositPojo.getAccountId());
 								System.out.println("Your new balance is: $" + depositPojo.getBalance());
 								System.out.println("----------------------------------------");
 								System.out.println("----------------------------------------");	
@@ -176,7 +183,7 @@ public class BankingApplication {
 								
 								System.out.println("Enter the Account ID you want to withdraw funds from: ");
 								int withdrawalAccountId = scan.nextInt();
-								withdrawPojo.setAccountNumber(withdrawalAccountId);
+								withdrawPojo.setAccountId(withdrawalAccountId);
 								
 								try {
 									withdrawPojo = accountService.viewBalance(withdrawPojo);
@@ -205,7 +212,7 @@ public class BankingApplication {
 										break;
 									}
 									System.out.println("----------------------------------------");
-									System.out.println("Congratulations! You have successfully withdrawn $" + withdrawalAmount + " from Account Number: " +withdrawPojo.getAccountNumber());
+									System.out.println("Congratulations! You have successfully withdrawn $" + withdrawalAmount + " from Account ID: " +withdrawPojo.getAccountId());
 									System.out.println("Your new balance is: $" + withdrawPojo.getBalance());
 									System.out.println("----------------------------------------");	
 									System.out.println("----------------------------------------");	
@@ -228,7 +235,7 @@ public class BankingApplication {
 								
 								System.out.println("Enter the Account ID you want to view the balance of: ");
 								scan.nextLine();
-								returningAccountPojo.setAccountNumber(scan.nextInt());
+								returningAccountPojo.setAccountId(scan.nextInt());
 								
 								try {
 									viewAllBalance = accountService.viewBalance(returningAccountPojo);

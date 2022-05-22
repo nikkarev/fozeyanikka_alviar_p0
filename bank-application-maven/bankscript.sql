@@ -1,9 +1,8 @@
 CREATE TABLE account_info(
-	account_number INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, 
+	account_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, 
 	customer_id INT,
 	account_type VARCHAR(10), 
-	balance NUMERIC(6,2),
-	amount NUMERIC(6,2)
+	balance NUMERIC(6,2)
 	);
 	
 	ALTER TABLE account_info 
@@ -14,7 +13,7 @@ CREATE TABLE account_info(
 
 CREATE TABLE customer_info(
 	customer_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-	account_number INT,
+	account_id INT,
 	first_name VARCHAR(15) NOT NULL,
 	last_name VARCHAR(15) NOT NULL,
 	username VARCHAR(20) NOT NULL, 
@@ -23,5 +22,5 @@ CREATE TABLE customer_info(
 	
 	ALTER TABLE customer_info 
 		ADD CONSTRAINT foreign_key 
-			FOREIGN KEY (account_number) 
-				REFERENCES account_info (account_number);
+			FOREIGN KEY (account_id) 
+				REFERENCES account_info (account_id);

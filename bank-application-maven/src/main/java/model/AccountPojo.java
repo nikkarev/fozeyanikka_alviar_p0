@@ -1,25 +1,25 @@
 package model;
 
 public class AccountPojo {
-	private int accountNumber;
+	private int accountId;
 	private double balance = 0.0;
 	
 	public AccountPojo() {
 		super();
 	}
 
-	public AccountPojo(int accountNumber, double balance) {
+	public AccountPojo(int accountId, double balance) {
 		super();
-		this.accountNumber = accountNumber;
+		this.accountId = accountId;
 		this.balance = balance;
 	}
 
-	public int getAccountNumber() {
-		return accountNumber;
+	public int getAccountId() {
+		return accountId;
 	}
 
-	public void setAccountNumber(int accountNumber) {
-		this.accountNumber = accountNumber;
+	public void setAccountId(int accountId) {
+		this.accountId = accountId;
 	}
 
 	public double getBalance() {
@@ -32,6 +32,6 @@ public class AccountPojo {
 
 	@Override
 	public String toString() {
-		return "AccountPojo [accountNumber=" + accountNumber + ", balance=" + balance + "]";
+		return "AccountPojo [accountId=" + accountId + ", balance=" + balance + "]";
 	}
 }

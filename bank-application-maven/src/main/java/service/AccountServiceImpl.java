@@ -7,6 +7,7 @@ import dao.AccountDaoDatabaseImpl;
 import exception.FundNotEnoughException;
 import exception.SystemException;
 import model.AccountPojo;
+import model.CustomerPojo;
 
 public class AccountServiceImpl implements AccountService{
 
@@ -25,8 +26,8 @@ public class AccountServiceImpl implements AccountService{
 	}
 
 	@Override
-	public AccountPojo createAccount(AccountPojo accountPojo) throws SystemException {
-		return accountDao.createAccount(accountPojo);
+	public AccountPojo createAccount(AccountPojo accountPojo, CustomerPojo customerPojo) throws SystemException {
+		return accountDao.createAccount(accountPojo, customerPojo);
 	}
 
 	@Override

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- configuration for file appender -->
-<Configuration status="DEBUG">
+<Configuration status="WARN">
 	<Appenders>
 		<Console name="LogToConsole" target="SYSTEM_OUT">
 			<PatternLayout

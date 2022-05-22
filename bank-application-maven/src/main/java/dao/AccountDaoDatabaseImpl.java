@@ -14,38 +14,37 @@ import org.apache.logging.log4j.Logger;
 import exception.FundNotEnoughException;
 import exception.SystemException;
 import model.AccountPojo;
+import model.CustomerPojo;
 
 public class AccountDaoDatabaseImpl implements AccountDao{
 	
 	private static final Logger LOG = LogManager.getLogger(AccountDaoDatabaseImpl.class);
 
-	@Override
-	public AccountPojo createAccount(AccountPojo accountPojo) throws SystemException {
-		
-		LOG.info("Entered into createAccount() in Dao Layer...");
+	public AccountPojo createAccount(AccountPojo accountPojo, CustomerPojo customerPojo) throws SystemException {
 		
 		Connection connection = null;
 
 		try {
-			ResultSet resultSet = null;
-
 			connection = DBUtil.establishConnection();
 			Statement statement = connection.createStatement();
 			
-//			String query= "INSERT INTO account_info VALUES ("+accountPojo.getBalance() + ") account_number = customer_id returning account_number";
+//			String query= "INSERT INTO account_info VALUES ("+accountPojo.getBalance() + ") account_id = customer_id returning account_id";
 
 			String query = "INSERT INTO account_info(balance)"
-					+ "VALUES ("+accountPojo.getBalance() +" ) returning account_number";
+					+ "VALUES ("+accountPojo.getBalance()+") returning account_id";
 			
-			resultSet = statement.executeQuery(query);
-			resultSet.next();
-			accountPojo.setAccountNumber(resultSet.getInt(1));
+			String query2 = "INSERT INTO customer_info(account_id) VALUES ("+customerPojo.getAccountId()+") returning account_id ";
+			
+			ResultSet resultSet1 = statement.executeQuery(query);
+			resultSet1.next();
+			ResultSet resultSet2 = statement.executeQuery(query2);
+			resultSet2.next();
+			accountPojo.setAccountId(resultSet1.getInt(1));
+//			customerPojo.setAccountId(resultSet2.getInt(1));
+			
 		} catch (SQLException e) {
 			throw new SystemException();
 		}
-		
-		LOG.info("Exited createAccount() in Dao...");
-		
 		return accountPojo;
 	}
 
@@ -60,7 +59,7 @@ public class AccountDaoDatabaseImpl implements AccountDao{
 			connection = DBUtil.establishConnection();
 			Statement statement = connection.createStatement();
 
-			String query = "UPDATE account_info SET balance=" +accountPojo.getBalance()+ "WHERE account_number=" + accountPojo.getAccountNumber();
+			String query = "UPDATE account_info SET balance=" +accountPojo.getBalance()+ "WHERE account_id=" + accountPojo.getAccountId();
 			int rowsAffected = statement.executeUpdate(query);
 
 		} catch (SQLException e) {
@@ -84,7 +83,7 @@ public class AccountDaoDatabaseImpl implements AccountDao{
 			connection = DBUtil.establishConnection();
 			Statement statement = connection.createStatement();
 
-			String query = "UPDATE account_info SET balance=" +accountPojo.getBalance()+ "WHERE account_number=" +accountPojo.getAccountNumber(); 
+			String query = "UPDATE account_info SET balance=" +accountPojo.getBalance()+ "WHERE account_id=" +accountPojo.getAccountId(); 
 			int rowsAffected = statement.executeUpdate(query);
 			
 		} catch (SQLException e) {
@@ -107,7 +106,7 @@ public class AccountDaoDatabaseImpl implements AccountDao{
 			connection = DBUtil.establishConnection();
 			Statement statement = connection.createStatement();
 
-			String query = "SELECT balance FROM account_info where account_number=" +accountPojo.getAccountNumber();
+			String query = "SELECT balance FROM account_info where account_id=" +accountPojo.getAccountId();
 
 			ResultSet resultSet = statement.executeQuery(query);
 
