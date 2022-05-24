@@ -19,23 +19,28 @@ public class CustomerDaoDatabaseImpl implements CustomerDao{
 		Connection connection = null;
 
 		try {
-			ResultSet resultSet = null;
-
 			connection = DBUtil.establishConnection();
 			Statement statement = connection.createStatement();
 			
 			String query = "INSERT INTO customer_info(password)"
 					+ "VALUES ( '"+customerPojo.getPassword()+"' ) returning customer_id";
 			
-			resultSet = statement.executeQuery(query);
+//			String query = "INSERT INTO customer_info(account_id, password) VALUES ("+customerPojo.getAccountId()+" , '"+customerPojo.getPassword()+"' ) returning customer_id ";
+			
+//			String query2 = "INSERT INTO customer_info(account_id) SELECT account_id FROM account_info ORDER BY account_id DESC LIMIT 1 returning customer_id";
+			
+//			String query2 = "UPDATE customer_info SET account_id SELECT account_id FROM account_info ORDER BY customer_id DESC LIMIT 1" ;
+			
+//			String query2 = "INSERT INTO customer_info(account_id) SELECT account_info.account_id FROM account_info INNER JOIN customer_info ON customer_info.account_id=account_info.account_id returning account_id";
+			
+			ResultSet resultSet = statement.executeQuery(query);
 			resultSet.next();
-
+			
+//			ResultSet resultSet2 = statement.executeQuery(query2);
+//			resultSet2.next();
+			
 			customerPojo.setCustomerId(resultSet.getInt(1));
 			
-//			String query2 = "INSERT INTO customer_info(customer_id) SELECT customer_id FROM account_info ORDER BY customer_id DESC LIMIT 1 returning customer_id";
-//			resultSet = statement.executeQuery(query2);
-//			resultSet.next();
-//			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new SystemException();

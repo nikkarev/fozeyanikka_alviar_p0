@@ -89,7 +89,13 @@ public class BankingApplication {
 						break;
 					} else {
 						System.out.println("----------------------------------------");
-						System.out.println("Choose a menu");
+						System.out.println("You have successfully Login!");
+						System.out.println("----------------------------------------");
+					}
+					
+					char pick = 'y';
+					while(pick == 'y') {
+						System.out.println("Choose a Menu");
 						System.out.println("----------------------------------------");
 						System.out.println("1. Register New Account");
 						System.out.println("2. Deposit");
@@ -109,9 +115,10 @@ public class BankingApplication {
 								
 								System.out.println("Enter your Initial Balance: ");
 								newAccountPojo.setBalance(scan.nextDouble());
-//								newAccountPojo.getAccountId();
-//								newAccountPojo.setAccountId(returningCustomerId);
 								
+								int customerId = customerLoginPojo.getAccountId();
+								
+								returningCustomerPojo.setCustomerId(customerId);;
 								
 								AccountPojo accountPojo;
 								try {
@@ -125,6 +132,17 @@ public class BankingApplication {
 								System.out.println("Congratulations! Account successfully created! \nYour Account ID is: " + accountPojo.getAccountId());
 								System.out.println("Your Initial Balance is: $" + accountPojo.getBalance());
 								System.out.println("----------------------------------------");
+								
+								System.out.println("Would you like to go back to the main menu? (y/n)");
+								pick = scan.next().charAt(0);
+								
+								if(pick == 'n') {
+									System.out.println("----------------------------------------");
+									System.out.println("Thank you for using our Banking Application System! \nHave a great day!");
+									System.out.println("----------------------------------------");
+									System.exit(0);
+								}
+								
 								break;
 							
 							// Deposit
@@ -156,13 +174,13 @@ public class BankingApplication {
 								}
 
 								System.out.println("----------------------------------------");
-								System.out.println("Congratulations! You have successfully deposited $" + depositAmount + " into Account ID: " +depositPojo.getAccountId());
+								System.out.println("Congratulations! \nYou have successfully deposited $" + depositAmount + " into Account ID: " +depositPojo.getAccountId());
 								System.out.println("Your new balance is: $" + depositPojo.getBalance());
 								System.out.println("----------------------------------------");
 								System.out.println("----------------------------------------");	
 								System.out.println("Would you like to go back to the main menu? (y/n)");
-								choice = scan.next().charAt(0);
-								if(choice == 'n') {
+								pick = scan.next().charAt(0);
+								if(pick == 'n') {
 									System.out.println("----------------------------------------");
 									System.out.println("Thank you for using our Banking Application System! \nHave a great day!");
 									System.out.println("----------------------------------------");
@@ -206,13 +224,13 @@ public class BankingApplication {
 										break;
 									}
 									System.out.println("----------------------------------------");
-									System.out.println("Congratulations! You have successfully withdrawn $" + withdrawalAmount + " from Account ID: " +withdrawPojo.getAccountId());
+									System.out.println("Congratulations! \nYou have successfully withdrawn $" + withdrawalAmount + " from Account ID: " +withdrawPojo.getAccountId());
 									System.out.println("Your new balance is: $" + withdrawPojo.getBalance());
 									System.out.println("----------------------------------------");	
 									System.out.println("----------------------------------------");	
 									System.out.println("Would you like to go back to the main menu? (y/n)");
-									choice = scan.next().charAt(0);
-									if(choice == 'n') {
+									pick = scan.next().charAt(0);
+									if(pick == 'n') {
 										System.out.println("----------------------------------------");
 										System.out.println("Thank you for using our Banking Application System! \nHave a great day!");
 										System.out.println("----------------------------------------");
@@ -234,18 +252,15 @@ public class BankingApplication {
 								try {
 									viewAllBalance = accountService.viewBalance(returningAccountPojo);
 									
-									System.out.println("----------------------------------------");
-									System.out.println("Your balance is: $");
-									
 									if(viewAllBalance == null) {
 										System.out.println("No records to show.");
 									} else {
-										System.out.println(viewAllBalance.getBalance());
+										System.out.println("Your balance is: $" +viewAllBalance.getBalance());
 										System.out.println("----------------------------------------");
 										System.out.println("Would you like to go back to the main menu? (y/n)");
-										choice = scan.next().charAt(0);
+										pick = scan.next().charAt(0);
 										
-										if(choice == 'n') {
+										if(pick == 'n') {
 											System.out.println("----------------------------------------");
 											System.out.println("Thank you for using our Banking Application System! \nHave a great day!");
 											System.out.println("----------------------------------------");
@@ -265,7 +280,6 @@ public class BankingApplication {
 								System.out.println("----------------------------------------");
 								System.exit(0);
 								break;
-
 						}
 					}
 
