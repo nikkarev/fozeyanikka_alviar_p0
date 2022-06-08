@@ -9,7 +9,7 @@ import model.CustomerPojo;
 
 public interface AccountService {
 	
-	AccountPojo createAccount(AccountPojo accountPojo, CustomerPojo customerPojo) throws SystemException;
+	AccountPojo createAccount(AccountPojo accountPojo, int customerId) throws SystemException;
 
 	AccountPojo deposit(AccountPojo accountPojo) throws SystemException; 
 

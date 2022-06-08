@@ -41,8 +41,17 @@ public class BankingApplication {
 				case 1:
 					CustomerPojo newCustomerPojo = new CustomerPojo();
 					
-					System.out.println("Create your password:");
+					System.out.println("Enter your First Name: ");
 					scan.nextLine();
+					newCustomerPojo.setFirstName(scan.nextLine());
+					
+					System.out.println("Enter your Last Name: ");
+					newCustomerPojo.setLastName(scan.nextLine());
+					
+					System.out.println("Enter your Username: ");
+					newCustomerPojo.setUsername(scan.nextLine());
+					
+					System.out.println("Create your password:");
 					newCustomerPojo.setPassword(scan.nextLine());
 					
 					CustomerPojo customerPojo = null;
@@ -54,7 +63,8 @@ public class BankingApplication {
 					}
 					
 					System.out.println("----------------------------------------");
-					System.out.println("Congratulations! Account successfully created! \nYour CustomerID is: " + customerPojo.getCustomerId());
+					System.out.println("Welcome " + customerPojo.getFirstName() + " " + customerPojo.getLastName() + "!");
+					System.out.println("Customer Account successfully created! \nYour Customer ID is: " + customerPojo.getCustomerId());
 					System.out.println("----------------------------------------");
 					break;
 					
@@ -62,11 +72,11 @@ public class BankingApplication {
 				case 2:
 					CustomerPojo customerLoginPojo = new CustomerPojo();
 					
-					System.out.println("Enter your Customer ID: ");
-					customerLoginPojo.setCustomerId(scan.nextInt());
+					System.out.println("Enter your Username: ");
+					scan.nextLine();
+					customerLoginPojo.setUsername(scan.nextLine());
 					
 					System.out.println("Enter password:");
-					scan.nextLine();
 					customerLoginPojo.setPassword(scan.nextLine());
 					
 					CustomerPojo returningCustomer = null;
@@ -111,18 +121,13 @@ public class BankingApplication {
 							// Register New Account
 							case 1:
 								AccountPojo newAccountPojo = new AccountPojo();
-								CustomerPojo returningCustomerPojo = new CustomerPojo();
 								
 								System.out.println("Enter your Initial Balance: ");
 								newAccountPojo.setBalance(scan.nextDouble());
 								
-								int customerId = customerLoginPojo.getAccountId();
-								
-								returningCustomerPojo.setCustomerId(customerId);;
-								
 								AccountPojo accountPojo;
 								try {
-									accountPojo = accountService.createAccount(newAccountPojo, returningCustomerPojo);
+									accountPojo = accountService.createAccount(newAccountPojo, returningCustomerId);
 								} catch(SystemException e) {
 									System.out.println(e.getMessage());
 									e.printStackTrace();

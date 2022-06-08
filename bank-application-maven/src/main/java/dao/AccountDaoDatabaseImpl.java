@@ -20,74 +20,60 @@ public class AccountDaoDatabaseImpl implements AccountDao{
 	
 	private static final Logger LOG = LogManager.getLogger(AccountDaoDatabaseImpl.class);
 
-	public AccountPojo createAccount(AccountPojo accountPojo, CustomerPojo customerPojo) throws SystemException {
-		
+	public AccountPojo createAccount(AccountPojo accountPojo, int customerId) throws SystemException {
+		LOG.info("Entered into createAccount() in Dao Layer...");
 		Connection connection = null;
 
 		try {
 			connection = DBUtil.establishConnection();
 			Statement statement = connection.createStatement();
-			
-//			String query= "INSERT INTO account_info VALUES ("+accountPojo.getBalance() + ") account_id = customer_id returning account_id";
 
-			String query = "INSERT INTO account_info(balance)"
-					+ "VALUES ("+accountPojo.getBalance()+") returning account_id";
-			
-//			String query2 = "INSERT INTO customer_info(account_id) VALUES ("+accountPojo.getAccountId()+") returning account_id ";
-//			
-//			String query2 = "INSERT INTO customer_info(account_id) SELECT account_id FROM account_info ORDER BY account_id DESC LIMIT 1" ; //this works but create a new row without password
-			
+			String query = "INSERT INTO account(customer_id, balance)"
+					+ "VALUES ("+customerId+" ,"+accountPojo.getBalance()+") returning account_id";
 			
 			ResultSet resultSet1 = statement.executeQuery(query);
 			resultSet1.next();
-			
-//			ResultSet resultSet2 = statement.executeQuery(query2);
-//			resultSet2.next();
 			
 			accountPojo.setAccountId(resultSet1.getInt(1));
 			
 		} catch (SQLException e) {
 			throw new SystemException();
 		}
+		LOG.info("Entered into createAccount() in Dao Layer...");
 		return accountPojo;
 	}
 
 
 	@Override
 	public AccountPojo deposit(AccountPojo accountPojo) throws SystemException {
-		Connection connection = null;
-		
 		LOG.info("Entered into deposit() in Dao Layer...");
+		Connection connection = null;
 
 		try {
 			connection = DBUtil.establishConnection();
 			Statement statement = connection.createStatement();
 
-			String query = "UPDATE account_info SET balance=" +accountPojo.getBalance()+ "WHERE account_id=" + accountPojo.getAccountId();
+			String query = "UPDATE account SET balance=" +accountPojo.getBalance()+ "WHERE account_id=" + accountPojo.getAccountId();
 			int rowsAffected = statement.executeUpdate(query);
 
 		} catch (SQLException e) {
 			throw new SystemException();
 		}
-		
 		LOG.info("Entered into deposit() in Dao Layer...");
-		
 		return accountPojo;
 	}
 
 
 	@Override
 	public AccountPojo withdraw(AccountPojo accountPojo) throws SystemException, FundNotEnoughException {
-		
 		LOG.info("Entered into withdraw() in Dao Layer...");
-		
 		Connection connection = null;
 
 		try {
 			connection = DBUtil.establishConnection();
 			Statement statement = connection.createStatement();
 
-			String query = "UPDATE account_info SET balance=" +accountPojo.getBalance()+ "WHERE account_id=" +accountPojo.getAccountId(); 
+			String query = "UPDATE account SET balance=" +accountPojo.getBalance()+ "WHERE account_id=" +accountPojo.getAccountId(); 
 			int rowsAffected = statement.executeUpdate(query);
 			
 		} catch (SQLException e) {
@@ -101,16 +87,14 @@ public class AccountDaoDatabaseImpl implements AccountDao{
 
 	@Override
 	public AccountPojo viewBalance(AccountPojo accountPojo) throws SystemException {
-		
 		LOG.info("Entered into viewBalance() in Dao Layer...");
-		
 		Connection connection = null;
 
 		try {
 			connection = DBUtil.establishConnection();
 			Statement statement = connection.createStatement();
 
-			String query = "SELECT balance FROM account_info where account_id=" +accountPojo.getAccountId();
+			String query = "SELECT balance FROM account where account_id=" +accountPojo.getAccountId();
 
 			ResultSet resultSet = statement.executeQuery(query);
 
@@ -120,9 +104,7 @@ public class AccountDaoDatabaseImpl implements AccountDao{
 		} catch (SQLException e) {
 			throw new SystemException();
 		}
-		
 		LOG.info("Entered into viewBalance() in Dao Layer...");
-		
 		return accountPojo;
 	}
 }

@@ -26,8 +26,8 @@ public class AccountServiceImpl implements AccountService{
 	}
 
 	@Override
-	public AccountPojo createAccount(AccountPojo accountPojo, CustomerPojo customerPojo) throws SystemException {
-		return accountDao.createAccount(accountPojo, customerPojo);
+	public AccountPojo createAccount(AccountPojo accountPojo, int customerId) throws SystemException {
+		return accountDao.createAccount(accountPojo, customerId);
 	}
 
 	@Override

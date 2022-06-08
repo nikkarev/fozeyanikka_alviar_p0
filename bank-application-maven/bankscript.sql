@@ -1,15 +1,12 @@
 CREATE TABLE account_info(
 	account_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, 
 	customer_id INT,
-	account_type VARCHAR(10), 
-	balance NUMERIC(6,2)
+	balance NUMERIC(6,2),
+	CONSTRAINT fk_customer
+      FOREIGN KEY(customer_id) 
+	  REFERENCES customer(customer_id)
+	  ON DELETE SET NULL
 	);
-	
-	ALTER TABLE account_info 
-		ADD CONSTRAINT customer_fk 
-			FOREIGN KEY (customer_id) 
-				REFERENCES customer_info(customer_id);
-
 
 CREATE TABLE customer_info(
 	customer_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -19,8 +16,3 @@ CREATE TABLE customer_info(
 	username VARCHAR(20) NOT NULL, 
 	password VARCHAR(20) NOT NULL
 	);
-	
-	ALTER TABLE customer_info 
-		ADD CONSTRAINT foreign_key 
-			FOREIGN KEY (account_id) 
-				REFERENCES account_info (account_id);
